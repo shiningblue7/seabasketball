@@ -8,6 +8,7 @@ const BlogPost = ({ post }) => {
           <Link to={routes.blogPost({ id: post.id })}>{post.title}</Link>
         </h2>
       </header>
+      {/* <div>{post.scheduleDate}</div> */}
       <div>{post.body}</div>
     </article>
   )

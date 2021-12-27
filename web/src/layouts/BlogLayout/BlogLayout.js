@@ -8,13 +8,13 @@ const BlogLayout = ({ children }) => {
     <>
       <header>
         <h1>
-          <Link to={routes.home()}>Redwood Blog</Link>
+          <Link to={routes.home()}>Basketball Signup</Link>
         </h1>
         <nav>
           <ul>
-            <li>
+            {/* <li>
               <Link to={routes.about()}>About</Link>
-            </li>
+            </li> */}
             <li>
               <button onClick={isAuthenticated ? logOut : logIn}>
                 {isAuthenticated ? 'Log Out' : 'Log In'}

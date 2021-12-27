@@ -8,12 +8,26 @@
 // 'src/pages/Admin/BooksPage/BooksPage.js' -> AdminBooksPage
 
 import { Router, Route, Set, Private } from '@redwoodjs/router'
+import UsersLayout from 'src/layouts/UsersLayout'
+import SchedulesLayout from 'src/layouts/SchedulesLayout'
 import PostsLayout from 'src/layouts/PostsLayout'
 import BlogLayout from './layouts/BlogLayout/BlogLayout'
 
 const Routes = () => {
   return (
     <Router>
+    <Set wrap={UsersLayout}>
+    <Route path="/users/new" page={UserNewUserPage} name="newUser" />
+    <Route path="/users/{id:Int}/edit" page={UserEditUserPage} name="editUser" />
+    <Route path="/users/{id:Int}" page={UserUserPage} name="user" />
+    <Route path="/users" page={UserUsersPage} name="users" />
+    </Set>
+    <Set wrap={SchedulesLayout}>
+    <Route path="/schedules/new" page={ScheduleNewSchedulePage} name="newSchedule" />
+    <Route path="/schedules/{id:Int}/edit" page={ScheduleEditSchedulePage} name="editSchedule" />
+    <Route path="/schedules/{id:Int}" page={ScheduleSchedulePage} name="schedule" />
+    <Route path="/schedules" page={ScheduleSchedulesPage} name="schedules" />
+    </Set>
     <Private unauthenticated='home'>
       <Set wrap={PostsLayout}>
         <Route path="/admin/posts/new" page={PostNewPostPage} name="newPost" />
@@ -27,6 +41,7 @@ const Routes = () => {
         <Route path="/about" page={AboutPage} name="about" />
         <Route path="/" page={HomePage} name="home" />
       </Set>
+
       <Route notfound page={NotFoundPage} />
     </Router>
   )

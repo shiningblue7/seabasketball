@@ -1,5 +1,12 @@
 import { parseJWT } from '@redwoodjs/api'
 import { AuthenticationError, ForbiddenError } from '@redwoodjs/graphql-server'
+import { db } from 'src/lib/db'
+import { AuthenticationClient } from 'auth0'
+
+const auth0 = new AuthenticationClient({
+  domain: process.env.AUTH0_DOMAIN,
+  clientId: process.env.AUTH0_CLIENT_ID,
+})
 
 /**
  * Represents the user attributes returned by the decoding the
@@ -31,8 +38,62 @@ export const getCurrentUser = async (
   { token, type },
   { event, context }
 ) => {
-  if (!decoded) {
+  if (!decoded.sub || !decoded ) {
     return null
+  }
+
+  // console.log('userDecoded' , decoded);
+  // console.log('userToken' , token);
+  // const auth0User = await auth0.getProfile(token)
+  // console.log('auth0User ', auth0User)
+
+
+  let user = await db.user.findFirst({
+    where: { subject: decoded.sub
+    }
+  })
+
+  if (!user) {
+    user = await db.user.findFirst({
+      where: { email: decoded.email
+      }
+    })
+  }
+
+  // if (user && !user.email) {
+  //   await db.user.update({
+  //     where: {
+  //       id : user.id
+  //     },
+  //     data: {
+  //       email: decoded.email
+  //     }
+  //   })
+  // }
+  console.log('user ', user)
+  if (user && !user.subject) {
+    await db.user.update({
+      where: {
+        id : user.id
+      },
+      data: {
+        subject: decoded.sub
+      }
+    })
+  }
+
+  if (!user && token) {
+    const auth0User = await auth0.getProfile(token)
+
+    // otherwise create a new user
+    user = await db.user.create({
+      data: {
+        subject: auth0User.sub,
+        email: auth0User.email,
+        name: auth0User.name
+        // you could add more values
+      }
+    })
   }
 
   const { roles } = parseJWT({ decoded })
@@ -42,6 +103,8 @@ export const getCurrentUser = async (
   }
 
   return { ...decoded }
+
+
 }
 
 /**

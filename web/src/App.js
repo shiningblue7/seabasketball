@@ -2,6 +2,8 @@ import { AuthProvider } from '@redwoodjs/auth'
 import { Auth0Client } from '@auth0/auth0-spa-js'
 
 
+
+
 import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 
@@ -10,6 +12,10 @@ import Routes from 'src/Routes'
 
 import './scaffold.css'
 import './index.css'
+
+
+
+
 
 
 
