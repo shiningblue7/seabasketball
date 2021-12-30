@@ -10,12 +10,10 @@ export const schedule = ({ id }) => {
   })
 }
 
-export const activeSchedule = async () => {
-  let schedule = await db.schedule.findMany({
+export const activeSchedule = () => {
+  return db.schedule.findFirst({
     where: { active: true },
   })
-  console.log('schedule', schedule)
-  return await schedule
 }
 
 export const createSchedule = ({ input }) => {
@@ -41,4 +39,3 @@ export const Schedule = {
   SignUp: (_obj, { root }) =>
     db.schedule.findUnique({ where: { id: root.id } }).SignUp(),
 }
-

@@ -10,12 +10,12 @@ export const signUp = ({ id }) => {
   })
 }
 
-export const activeSignUps= () =>{
+export const activeSignups = () => {
   return db.signUp.findMany({
     where: {
       schedule: {
-        active : true
-      }
+        active: true,
+      },
     },
   })
 }
