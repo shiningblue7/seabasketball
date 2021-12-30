@@ -10,6 +10,7 @@ export const QUERY = gql`
       id
       title
       date
+      active
       createdAt
     }
   }
@@ -20,6 +21,7 @@ const UPDATE_SCHEDULE_MUTATION = gql`
       id
       title
       date
+      active
       createdAt
     }
   }

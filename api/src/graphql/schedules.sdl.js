@@ -3,11 +3,13 @@ export const schema = gql`
     id: Int!
     title: String!
     date: DateTime!
+    active: Boolean!
     createdAt: DateTime!
     SignUp: [SignUp]!
   }
 
   type Query {
+    activeSchedule: Schedule @skipAuth
     schedules: [Schedule!]! @skipAuth
     schedule(id: Int!): Schedule @skipAuth
   }
@@ -15,11 +17,13 @@ export const schema = gql`
   input CreateScheduleInput {
     title: String!
     date: DateTime!
+    active: Boolean!
   }
 
   input UpdateScheduleInput {
     title: String
     date: DateTime
+    active: Boolean
   }
 
   type Mutation {

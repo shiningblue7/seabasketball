@@ -19,15 +19,15 @@ model Schedule {
   id        Int      @id @default(autoincrement())
   title     String
   date      DateTime
+  active    Boolean  @default(false)
   createdAt DateTime @default(now())
   SignUp    SignUp[] @relation("ScheduleSignUp")
 }
 
 model SignUp {
   id         Int      @id @default(autoincrement())
-  order      Int
   scheduleId Int
-  userId     Int
+  userId     Int      @unique
   schedule   Schedule @relation("ScheduleSignUp", fields: [scheduleId], references: [id], onDelete: Cascade)
   user       User     @relation("UserSignUp", fields: [userId], references: [id], onDelete: Cascade)
   createdAt  DateTime @default(now())

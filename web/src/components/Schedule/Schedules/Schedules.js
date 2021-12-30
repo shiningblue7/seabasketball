@@ -4,7 +4,6 @@ import { Link, routes } from '@redwoodjs/router'
 
 import { QUERY } from 'src/components/Schedule/SchedulesCell'
 
-
 const DELETE_SCHEDULE_MUTATION = gql`
   mutation DeleteScheduleMutation($id: Int!) {
     deleteSchedule(id: $id) {
@@ -68,6 +67,7 @@ const SchedulesList = ({ schedules }) => {
             <th>Id</th>
             <th>Title</th>
             <th>Date</th>
+            <th>Active</th>
             <th>Created at</th>
             <th>&nbsp;</th>
           </tr>
@@ -78,6 +78,7 @@ const SchedulesList = ({ schedules }) => {
               <td>{truncate(schedule.id)}</td>
               <td>{truncate(schedule.title)}</td>
               <td>{timeTag(schedule.date)}</td>
+              <td>{checkboxInputTag(schedule.active)}</td>
               <td>{timeTag(schedule.createdAt)}</td>
               <td>
                 <nav className="rw-table-actions">

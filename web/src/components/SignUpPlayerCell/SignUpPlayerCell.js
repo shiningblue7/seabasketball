@@ -1,22 +1,18 @@
-import { useMutation } from '@redwoodjs/web'
-import { FieldError, Label, SelectField } from "@redwoodjs/forms"
-import React, { useState } from 'react';
 export const QUERY = gql`
-  query SchedulesQuery {
-    schedules {
+  query FindScheduleQuery{
+    schedule: activeSchedule{
       id
       title
       date
-    }
-    signUps{
-      id
       createdAt
-      user {
-        id
-        name
-      }
     }
-    users{
+    signUps: activeSignups{
+      id
+      scheduleId
+      userId
+      createdAt
+    }
+    users {
       id
       name
     }
@@ -31,38 +27,35 @@ export const Failure = ({ error }) => (
   <div style={{ color: 'red' }}>Error: {error.message}</div>
 )
 
-export const Success = ({ schedules, signUps, users }) => {
-  // console.log('props ', props)
-  // var tempUser = users.toString()
-  // tempUser = tempUser.split(',')
-  // console.log('users ', users)
-  // console.log('signup ', signUps)
-  // for (var i = 0; signUps.length > i;i++) {
-  //   var signUpUser = signUps[i];
-  //   console.log('signUpUser', signUpUser)
-  //   console.log('signUpUser id', signUpUser.user.id)
-  //   for (var j = 0; tempUser.length > j;j++) {
-  //       var user = tempUser[j];
-  //       console.log('user', user)
-  //       console.log('user.id', user.id)
-  //       if (user.id == signUpUser.user.id) {
-  //         tempUser.splice(j, 1);
-  //         j -= 1;
-  //       }
-  //   }
-  // }
-  // console.log('tempUser', tempUser)
+export const Success = ({ schedule, signUps, players }) => {
   var userGoodList = [];
   for (var j = 0; signUps.length > j;j++) {
       var signUpUser = signUps[j];
-      //console.log('user', signUpUser)
-      //console.log('user.id', signUpUser.user.id)
       userGoodList = users.filter(x => {
         return x.id != signUpUser.user.id;
       })
-      // console.log('userGood ', userGoodList)
   }
-  // console.log('users ', users)
+
+  const [createSignUp, { loading, error }] = useMutation(
+    CREATE_SIGN_UP_MUTATION,
+    {
+      onCompleted: () => {
+        toast.success('SignUp created')
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    }
+  )
+
+  const onSave = (input) => {
+    const castInput = Object.assign(input, {
+      scheduleId: parseInt(input.scheduleId),
+      userId: parseInt(input.userId),
+    })
+    createSignUp({ variables: { input: castInput } })
+  }
+
   const DELETE_SIGNUP_MUTATION = gql`
   mutation deleteSignUpMutation($id: Int!) {
     deleteSignUp(id: $id) {
@@ -136,7 +129,7 @@ export const Success = ({ schedules, signUps, users }) => {
   return (
     <>
     <article>
-    <h2>{schedules[0].title} - {new Date(schedules[0].date).toLocaleString()}</h2>
+    <h2>{schedule.title} - {new Date(schedule.date).toLocaleString()}</h2>
     </article>
 
     <div>
@@ -198,33 +191,5 @@ export const Success = ({ schedules, signUps, users }) => {
     </div>
     </>
   )
-  // return JSON.stringify(schedules)
-}
 
-// export const Success = ({ schedulePosts }) => {
-//   return JSON.stringify(schedules)
-// }
-{/*<nav className="rw-table-actions">
-                  <Link
-                    to={routes.schedule({ id: schedule.id })}
-                    title={'Show schedule ' + schedule.id + ' detail'}
-                    className="rw-button rw-button-small"
-                  >
-                    Show
-                  </Link>
-                  <Link
-                    to={routes.editSchedule({ id: schedule.id })}
-                    title={'Edit schedule ' + schedule.id}
-                    className="rw-button rw-button-small rw-button-blue"
-                  >
-                    Edit
-                  </Link>
-                  <button
-                    type="button"
-                    title={'Delete schedule ' + schedule.id}
-                    className="rw-button rw-button-small rw-button-red"
-                    onClick={() => onDeleteClick(schedule.id)}
-                  >
-                    Delete
-                  </button>
-                </nav>*/}
+}

@@ -9,6 +9,5 @@ module.exports = (config, { mode }) => {
 
   // Add custom plugins for your project
   // config.plugins.push(YOUR_PLUGIN)
-
   return config
 }

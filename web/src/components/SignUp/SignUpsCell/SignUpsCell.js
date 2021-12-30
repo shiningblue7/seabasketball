@@ -6,16 +6,10 @@ export const QUERY = gql`
   query FindSignUps {
     signUps {
       id
-      order
       scheduleId
       userId
       createdAt
     }
-    users {
-      id
-      name
-    }
-
   }
 `
 
@@ -36,9 +30,6 @@ export const Failure = ({ error }) => (
   <div className="rw-cell-error">{error.message}</div>
 )
 
-export const Success = ({ signUps, users }) => {
-  //  console.log(' signUps', signUps)
-  // console.log(' schedules', schedules)
-  // console.log(' users', users)
-  return <SignUps signUps={signUps} users={users} />
+export const Success = ({ signUps }) => {
+  return <SignUps signUps={signUps} />
 }

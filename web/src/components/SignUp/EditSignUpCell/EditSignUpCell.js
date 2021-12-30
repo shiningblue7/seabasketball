@@ -8,7 +8,6 @@ export const QUERY = gql`
   query EditSignUpById($id: Int!) {
     signUp: signUp(id: $id) {
       id
-      order
       scheduleId
       userId
       createdAt
@@ -19,7 +18,6 @@ const UPDATE_SIGN_UP_MUTATION = gql`
   mutation UpdateSignUpMutation($id: Int!, $input: UpdateSignUpInput!) {
     updateSignUp(id: $id, input: $input) {
       id
-      order
       scheduleId
       userId
       createdAt

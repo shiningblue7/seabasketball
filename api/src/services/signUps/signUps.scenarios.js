@@ -2,26 +2,18 @@ export const standard = defineScenario({
   signUp: {
     one: {
       data: {
-        order: 7866495,
-        schedule: {
-          create: { title: 'String', schedule: '2021-12-27T19:08:43Z' },
-        },
-
+        schedule: { create: { title: 'String', date: '2021-12-30T07:40:49Z' } },
         user: {
-          create: { updatedAt: '2021-12-27T19:08:43Z', email: 'String141573' },
+          create: { updatedAt: '2021-12-30T07:40:49Z', email: 'String3603464' },
         },
       },
     },
 
     two: {
       data: {
-        order: 1109503,
-        schedule: {
-          create: { title: 'String', schedule: '2021-12-27T19:08:43Z' },
-        },
-
+        schedule: { create: { title: 'String', date: '2021-12-30T07:40:49Z' } },
         user: {
-          create: { updatedAt: '2021-12-27T19:08:43Z', email: 'String2571234' },
+          create: { updatedAt: '2021-12-30T07:40:49Z', email: 'String9664911' },
         },
       },
     },

@@ -3,8 +3,6 @@ import { toast } from '@redwoodjs/web/toast'
 import { navigate, routes } from '@redwoodjs/router'
 import SignUpForm from 'src/components/SignUp/SignUpForm'
 
-
-
 const CREATE_SIGN_UP_MUTATION = gql`
   mutation CreateSignUpMutation($input: CreateSignUpInput!) {
     createSignUp(input: $input) {

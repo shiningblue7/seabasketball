@@ -10,6 +10,15 @@ export const signUp = ({ id }) => {
   })
 }
 
+export const activeSignUps= () =>{
+  return db.signUp.findMany({
+    where: {
+      schedule: {
+        active : true
+      }
+    },
+  })
+}
 export const createSignUp = ({ input }) => {
   return db.signUp.create({
     data: input,

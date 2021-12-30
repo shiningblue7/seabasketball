@@ -4,7 +4,6 @@ export const QUERY = gql`
   query FindSignUpById($id: Int!) {
     signUp: signUp(id: $id) {
       id
-      order
       scheduleId
       userId
       createdAt

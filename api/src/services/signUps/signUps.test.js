@@ -22,13 +22,11 @@ describe('signUps', () => {
   scenario('creates a signUp', async (scenario) => {
     const result = await createSignUp({
       input: {
-        order: 6556143,
         scheduleId: scenario.signUp.two.scheduleId,
         userId: scenario.signUp.two.userId,
       },
     })
 
-    expect(result.order).toEqual(6556143)
     expect(result.scheduleId).toEqual(scenario.signUp.two.scheduleId)
     expect(result.userId).toEqual(scenario.signUp.two.userId)
   })
@@ -37,10 +35,10 @@ describe('signUps', () => {
     const original = await signUp({ id: scenario.signUp.one.id })
     const result = await updateSignUp({
       id: original.id,
-      input: { order: 2049015 },
+      input: { scheduleId: scenario.signUp.two.scheduleId },
     })
 
-    expect(result.order).toEqual(2049015)
+    expect(result.scheduleId).toEqual(scenario.signUp.two.scheduleId)
   })
 
   scenario('deletes a signUp', async (scenario) => {

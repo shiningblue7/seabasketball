@@ -70,6 +70,10 @@ const Schedule = ({ schedule }) => {
               <td>{timeTag(schedule.date)}</td>
             </tr>
             <tr>
+              <th>Active</th>
+              <td>{checkboxInputTag(schedule.active)}</td>
+            </tr>
+            <tr>
               <th>Created at</th>
               <td>{timeTag(schedule.createdAt)}</td>
             </tr>

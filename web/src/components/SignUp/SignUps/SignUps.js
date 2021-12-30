@@ -2,17 +2,15 @@ import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 import { Link, routes } from '@redwoodjs/router'
 
-// import { QUERY } from 'src/components/SignUp/SignUpsCell'
-// import { QUERY } from 'src/components/Schedule/SchedulesCell'
-// import Schedules from 'src/components/Schedule/SchedulesCell'
+import { QUERY } from 'src/components/SignUp/SignUpsCell'
 
-// const DELETE_SIGN_UP_MUTATION = gql`
-//   mutation DeleteSignUpMutation($id: Int!) {
-//     deleteSignUp(id: $id) {
-//       id
-//     }
-//   }
-// `
+const DELETE_SIGN_UP_MUTATION = gql`
+  mutation DeleteSignUpMutation($id: Int!) {
+    deleteSignUp(id: $id) {
+      id
+    }
+  }
+`
 
 const MAX_STRING_LENGTH = 150
 
@@ -39,24 +37,21 @@ const timeTag = (datetime) => {
 const checkboxInputTag = (checked) => {
   return <input type="checkbox" checked={checked} disabled />
 }
-//
-const SignUpsList = ({ signUps, users , schedules}) => {
-  // console.log(' signUps', signUps)
-  // console.log(' schedules', schedules)
-  // console.log(' users', users)
-  // const [deleteSignUp] = useMutation(DELETE_SIGN_UP_MUTATION, {
-  //   onCompleted: () => {
-  //     toast.success('SignUp deleted')
-  //   },
-  //   onError: (error) => {
-  //     toast.error(error.message)
-  //   },
-  //   // This refetches the query on the list page. Read more about other ways to
-  //   // update the cache over here:
-  //   // https://www.apollographql.com/docs/react/data/mutations/#making-all-other-cache-updates
-  //   // refetchQueries: [{ query: QUERY }],
-  //   awaitRefetchQueries: true,
-  // })
+
+const SignUpsList = ({ signUps }) => {
+  const [deleteSignUp] = useMutation(DELETE_SIGN_UP_MUTATION, {
+    onCompleted: () => {
+      toast.success('SignUp deleted')
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    },
+    // This refetches the query on the list page. Read more about other ways to
+    // update the cache over here:
+    // https://www.apollographql.com/docs/react/data/mutations/#making-all-other-cache-updates
+    refetchQueries: [{ query: QUERY }],
+    awaitRefetchQueries: true,
+  })
 
   const onDeleteClick = (id) => {
     if (confirm('Are you sure you want to delete signUp ' + id + '?')) {
@@ -70,7 +65,6 @@ const SignUpsList = ({ signUps, users , schedules}) => {
         <thead>
           <tr>
             <th>Id</th>
-            <th>Order</th>
             <th>Schedule id</th>
             <th>User id</th>
             <th>Created at</th>
@@ -81,9 +75,7 @@ const SignUpsList = ({ signUps, users , schedules}) => {
           {signUps.map((signUp) => (
             <tr key={signUp.id}>
               <td>{truncate(signUp.id)}</td>
-              <td>{truncate(signUp.order)}</td>
               <td>{truncate(signUp.scheduleId)}</td>
-              {/* <td>{truncate(prop.'7')}</td> */}
               <td>{truncate(signUp.userId)}</td>
               <td>{timeTag(signUp.createdAt)}</td>
               <td>

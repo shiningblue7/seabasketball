@@ -62,10 +62,6 @@ const SignUp = ({ signUp }) => {
               <td>{signUp.id}</td>
             </tr>
             <tr>
-              <th>Order</th>
-              <td>{signUp.order}</td>
-            </tr>
-            <tr>
               <th>Schedule id</th>
               <td>{signUp.scheduleId}</td>
             </tr>
