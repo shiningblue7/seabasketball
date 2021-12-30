@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "@redwoodjs/core": "^0.41.0",
-	"auth0": "^2.37.0"
+    "auth0": "^2.37.0"
   },
   "eslintConfig": {
     "extends": "@redwoodjs/eslint-config",
@@ -21,5 +21,9 @@
   },
   "prisma": {
     "seed": "yarn rw exec seed"
+  },
+  "dependencies": {
+    "@theme-ui/presets": "^0.13.0",
+    "theme-ui": "^0.13.0"
   }
 }

@@ -2,23 +2,24 @@ export const schema = gql`
   type Schedule {
     id: Int!
     title: String!
-    schedule: DateTime!
+    date: DateTime!
     createdAt: DateTime!
+    SignUp: [SignUp]!
   }
 
   type Query {
-    schedules: [Schedule!]! @requireAuth
-    schedule(id: Int!): Schedule @requireAuth
+    schedules: [Schedule!]! @skipAuth
+    schedule(id: Int!): Schedule @skipAuth
   }
 
   input CreateScheduleInput {
     title: String!
-    schedule: DateTime!
+    date: DateTime!
   }
 
   input UpdateScheduleInput {
     title: String
-    schedule: DateTime
+    date: DateTime
   }
 
   type Mutation {

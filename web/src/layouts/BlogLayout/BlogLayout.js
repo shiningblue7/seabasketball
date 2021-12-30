@@ -3,7 +3,7 @@ import { useAuth } from '@redwoodjs/auth'
 
 const BlogLayout = ({ children }) => {
   const { logIn, logOut, isAuthenticated, userMetadata } = useAuth()
-  console.log('userMetadata', userMetadata)
+  // console.log('userMetadata', userMetadata)
   return (
     <>
       <header>
@@ -16,7 +16,7 @@ const BlogLayout = ({ children }) => {
               <Link to={routes.about()}>About</Link>
             </li> */}
             <li>
-              <button onClick={isAuthenticated ? logOut : logIn}>
+              <button class='button' onClick={isAuthenticated ? logOut : logIn}>
                 {isAuthenticated ? 'Log Out' : 'Log In'}
               </button>
             </li>

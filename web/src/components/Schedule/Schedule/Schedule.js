@@ -66,8 +66,8 @@ const Schedule = ({ schedule }) => {
               <td>{schedule.title}</td>
             </tr>
             <tr>
-              <th>Schedule</th>
-              <td>{timeTag(schedule.schedule)}</td>
+              <th>Date</th>
+              <td>{timeTag(schedule.date)}</td>
             </tr>
             <tr>
               <th>Created at</th>

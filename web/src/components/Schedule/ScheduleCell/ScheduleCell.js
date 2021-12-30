@@ -5,7 +5,7 @@ export const QUERY = gql`
     schedule: schedule(id: $id) {
       id
       title
-      schedule
+      date
       createdAt
     }
   }

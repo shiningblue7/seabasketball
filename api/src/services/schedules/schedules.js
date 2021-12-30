@@ -28,3 +28,8 @@ export const deleteSchedule = ({ id }) => {
     where: { id },
   })
 }
+
+export const Schedule = {
+  SignUp: (_obj, { root }) =>
+    db.schedule.findUnique({ where: { id: root.id } }).SignUp(),
+}

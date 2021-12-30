@@ -9,7 +9,7 @@ export const QUERY = gql`
     schedule: schedule(id: $id) {
       id
       title
-      schedule
+      date
       createdAt
     }
   }
@@ -19,7 +19,7 @@ const UPDATE_SCHEDULE_MUTATION = gql`
     updateSchedule(id: $id, input: $input) {
       id
       title
-      schedule
+      date
       createdAt
     }
   }

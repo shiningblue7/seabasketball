@@ -47,21 +47,21 @@ const ScheduleForm = (props) => {
         <FieldError name="title" className="rw-field-error" />
 
         <Label
-          name="schedule"
+          name="date"
           className="rw-label"
           errorClassName="rw-label rw-label-error"
         >
-          Schedule
+          Date
         </Label>
         <DatetimeLocalField
-          name="schedule"
-          defaultValue={formatDatetime(props.schedule?.schedule)}
+          name="date"
+          defaultValue={formatDatetime(props.schedule?.date)}
           className="rw-input"
           errorClassName="rw-input rw-input-error"
           validation={{ required: true }}
         />
 
-        <FieldError name="schedule" className="rw-field-error" />
+        <FieldError name="date" className="rw-field-error" />
 
         <div className="rw-button-group">
           <Submit disabled={props.loading} className="rw-button rw-button-blue">

@@ -52,25 +52,14 @@ export const getCurrentUser = async (
     where: { subject: decoded.sub
     }
   })
-
-  if (!user) {
+  // console.log('1st user ', user)
+  if (!user && decoded.email) {
     user = await db.user.findFirst({
       where: { email: decoded.email
       }
     })
   }
 
-  // if (user && !user.email) {
-  //   await db.user.update({
-  //     where: {
-  //       id : user.id
-  //     },
-  //     data: {
-  //       email: decoded.email
-  //     }
-  //   })
-  // }
-  console.log('user ', user)
   if (user && !user.subject) {
     await db.user.update({
       where: {
@@ -91,7 +80,6 @@ export const getCurrentUser = async (
         subject: auth0User.sub,
         email: auth0User.email,
         name: auth0User.name
-        // you could add more values
       }
     })
   }
