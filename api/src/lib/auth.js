@@ -84,11 +84,11 @@ export const getCurrentUser = async (
     })
   }
 
-  const { roles } = parseJWT({ decoded })
+  // const { roles } = parseJWT({ decoded })
 
-  if (roles) {
-    return { ...decoded, roles }
-  }
+  // if (roles) {
+  //   return { ...decoded, roles }
+  // }
 
   return { ...decoded }
 
