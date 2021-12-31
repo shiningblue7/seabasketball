@@ -9,7 +9,9 @@ functions = "api/dist/functions"
   # and then use netlify link https://docs.netlify.com/cli/get-started/#link-and-unlink-sites
   # to connect your local project to a site already on Netlify
   # then run netlify dev and our app will be accessible on the port specified below
-  framework = "redwoodjs"
+  #framework = "redwoodjs"
+  framework = "#custom"
+  command = "yarn rw dev"
   # Set targetPort to the [web] side port as defined in redwood.toml
   targetPort = 8910
   # Point your browser to this port to access your RedwoodJS app
