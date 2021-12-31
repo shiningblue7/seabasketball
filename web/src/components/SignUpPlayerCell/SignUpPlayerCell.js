@@ -1,3 +1,7 @@
+import { useMutation } from '@redwoodjs/web'
+import { toast } from '@redwoodjs/web/toast'
+import { FieldError, Label, SelectField } from "@redwoodjs/forms"
+import React, { useState } from 'react';
 export const QUERY = gql`
   query FindScheduleQuery {
     schedule: activeSchedule {
@@ -6,10 +10,14 @@ export const QUERY = gql`
       date
       createdAt
     }
-    signUps: activeSignUps {
+    signUps: activeSignups {
       id
       scheduleId
       userId
+      user {
+        id
+        name
+      }
       createdAt
     }
     users {
@@ -28,33 +36,51 @@ export const Failure = ({ error }) => (
 )
 
 export const Success = ({ schedule, signUps, users }) => {
-  var userGoodList = []
+  console.log('signUps' , signUps)
+  var userGoodList = users;
   for (var j = 0; signUps.length > j; j++) {
     var signUpUser = signUps[j]
-    userGoodList = users.filter((x) => {
+    userGoodList = userGoodList.filter((x) => {
       return x.id != signUpUser.user.id
     })
+    console.log('userGoodList' , userGoodList)
   }
 
+  const CREATE_SIGN_UP_MUTATION = gql`
+    mutation CreateSignUpMutation($input: CreateSignUpInput!) {
+      createSignUp(input: $input) {
+        id
+      }
+    }
+  `
   const [createSignUp, { loading, error }] = useMutation(
     CREATE_SIGN_UP_MUTATION,
     {
       onCompleted: () => {
-        toast.success('SignUp created')
+        // toast.success('SignUp created')
       },
       onError: (error) => {
         toast.error(error.message)
       },
+      refetchQueries: [{ query: QUERY }],
+      awaitRefetchQueries: true,
     }
   )
 
-  const onSave = (input) => {
+  const onAddClick = (userId, scheduleId) => {
+    // if (confirm('Are you sure you want to remove ' + name + '?')) {
+      // deleteSignUp({ variables: { id } })
+    // }
+    // console.log('add user' , userId)
+    // console.log('add schedule' , scheduleId)
+    var input= {}
     const castInput = Object.assign(input, {
-      scheduleId: parseInt(input.scheduleId),
-      userId: parseInt(input.userId),
+      scheduleId: parseInt(scheduleId),
+      userId: parseInt(userId),
     })
     createSignUp({ variables: { input: castInput } })
   }
+
 
   const DELETE_SIGNUP_MUTATION = gql`
     mutation deleteSignUpMutation($id: Int!) {
@@ -77,9 +103,9 @@ export const Success = ({ schedule, signUps, users }) => {
     awaitRefetchQueries: true,
   })
   const onDeleteClick = (id, name) => {
-    if (confirm('Are you sure you want to remove ' + name + '?')) {
+    // if (confirm('Are you sure you want to remove ' + name + '?')) {
       deleteSignUp({ variables: { id } })
-    }
+    // }
   }
 
   function sayHello(name) {
@@ -165,7 +191,7 @@ export const Success = ({ schedule, signUps, users }) => {
           </tbody>
         </table>
 
-        <h2> Players</h2>
+        <h2>Available Players</h2>
         <table border="1">
           <thead>
             <tr>
@@ -175,7 +201,7 @@ export const Success = ({ schedule, signUps, users }) => {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
+            {userGoodList.map((user) => (
               <tr key={user.id}>
                 <td>{user.name}</td>
                 <td>
@@ -183,7 +209,7 @@ export const Success = ({ schedule, signUps, users }) => {
                     type="button"
                     title={'Add to signup' + user.name}
                     className="rw-button rw-button-small rw-button-green"
-                    onClick={() => onAddClick(user.id)}
+                    onClick={() => onAddClick(user.id, schedule.id)}
                   >
                     Add
                   </button>
