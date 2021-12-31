@@ -128,7 +128,7 @@ export const Success = ({ schedule, signUps, users }) => {
     return
   }
 
-  const MAX_STRING_LENGTH = 150
+  const MAX_STRING_LENGTH = 20
   const truncate = (text) => {
     let output = text
     if (text && text.length > MAX_STRING_LENGTH) {
@@ -161,7 +161,7 @@ export const Success = ({ schedule, signUps, users }) => {
 
       <div>
         <h2> Signed Up Players</h2>
-        <table border="1">
+        <table>
           <thead>
             <tr>
               <th>Signed Up</th>
@@ -179,7 +179,7 @@ export const Success = ({ schedule, signUps, users }) => {
                   <button
                     type="button"
                     title={'Remove signup' + signup.user.name}
-                    className="rw-button rw-button-small rw-button-red"
+                    // className="rw-button rw-button-small rw-button-red"
                     onClick={() => onDeleteClick(signup.id, signup.user.name)}
                   >
                     Remove

@@ -41,7 +41,7 @@ export const getCurrentUser = async (
   if (!decoded.sub || !decoded ) {
     return null
   }
-  console.log('context' , context);
+  //console.log('context' , context);
   // console.log('userDecoded' , decoded);
   // console.log('userToken' , token);
 

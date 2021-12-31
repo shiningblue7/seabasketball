@@ -1,9 +1,6 @@
 import { AuthProvider } from '@redwoodjs/auth'
 import { Auth0Client } from '@auth0/auth0-spa-js'
 
-
-
-
 import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 
@@ -11,15 +8,10 @@ import FatalErrorPage from 'src/pages/FatalErrorPage'
 import Routes from 'src/Routes'
 
 import './scaffold.css'
-import './index.css'
-
-
-
-
-
-
-
-
+// import './index.css'
+// import 'cirrus-ui';
+import './base.css'
+import './nav.css'
 
 const auth0 = new Auth0Client({
   domain: process.env.AUTH0_DOMAIN,
