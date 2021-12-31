@@ -160,7 +160,6 @@ export const Success = ({ schedule, signUps, users }) => {
       </article>
 
       <div>
-        <p>players: {players}</p>
         <h2> Signed Up Players</h2>
         <table border="1">
           <thead>
