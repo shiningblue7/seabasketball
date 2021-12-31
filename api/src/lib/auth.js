@@ -3,6 +3,7 @@ import { AuthenticationError, ForbiddenError } from '@redwoodjs/graphql-server'
 import { db } from 'src/lib/db'
 import { AuthenticationClient } from 'auth0'
 
+
 const auth0 = new AuthenticationClient({
   domain: process.env.AUTH0_DOMAIN,
   clientId: process.env.AUTH0_CLIENT_ID,
@@ -35,15 +36,15 @@ const auth0 = new AuthenticationClient({
  */
 export const getCurrentUser = async (
   decoded,
-  { token, type },
-  { event, context }
+  { token, type }
 ) => {
   if (!decoded.sub || !decoded ) {
     return null
   }
-
+  console.log('context' , context);
   // console.log('userDecoded' , decoded);
   // console.log('userToken' , token);
+
   // const auth0User = await auth0.getProfile(token)
   // console.log('auth0User ', auth0User)
 
@@ -90,7 +91,7 @@ export const getCurrentUser = async (
   //   return { ...decoded, roles }
   // }
 
-  return { ...decoded }
+  return { ...decoded,type, token }
 
 
 }
