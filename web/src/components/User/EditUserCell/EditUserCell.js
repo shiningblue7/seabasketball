@@ -13,6 +13,7 @@ export const QUERY = gql`
       subject
       email
       name
+      roles
     }
   }
 `
@@ -25,6 +26,7 @@ const UPDATE_USER_MUTATION = gql`
       subject
       email
       name
+      roles
     }
   }
 `

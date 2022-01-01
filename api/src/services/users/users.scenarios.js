@@ -1,11 +1,11 @@
 export const standard = defineScenario({
   user: {
     one: {
-      data: { updatedAt: '2021-12-27T07:07:19Z', email: 'String7255786' },
+      data: { updatedAt: '2022-01-01T07:29:16Z', email: 'String2885726' },
     },
 
     two: {
-      data: { updatedAt: '2021-12-27T07:07:19Z', email: 'String6305151' },
+      data: { updatedAt: '2022-01-01T07:29:16Z', email: 'String1282845' },
     },
   },
 })

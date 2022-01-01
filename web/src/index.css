@@ -55,3 +55,8 @@
     display: inline-block;
     font-size: 10px;
   } */
+
+
+  .font-bold {
+    font-weight: 700
+  }

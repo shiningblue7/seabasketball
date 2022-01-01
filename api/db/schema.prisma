@@ -41,4 +41,5 @@ model User {
   email     String   @unique
   name      String   @default("")
   SignUp    SignUp[] @relation("UserSignUp")
+  roles     String?
 }

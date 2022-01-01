@@ -36,24 +36,22 @@ const auth0 = new AuthenticationClient({
  */
 export const getCurrentUser = async (
   decoded,
-  { token, type }
+  { token, type },
+  { event, context }
 ) => {
   if (!decoded.sub || !decoded ) {
     return null
   }
-  //console.log('context' , context);
+  // console.log('context' , context);
   // console.log('userDecoded' , decoded);
   // console.log('userToken' , token);
-
-  // const auth0User = await auth0.getProfile(token)
-  // console.log('auth0User ', auth0User)
-
 
   let user = await db.user.findFirst({
     where: { subject: decoded.sub
     }
   })
-  // console.log('1st user ', user)
+
+  //find user by email
   if (!user && decoded.email) {
     user = await db.user.findFirst({
       where: { email: decoded.email
@@ -61,6 +59,7 @@ export const getCurrentUser = async (
     })
   }
 
+  //if user is defined, but subject is empty, update the subject
   if (user && !user.subject) {
     await db.user.update({
       where: {
@@ -71,10 +70,11 @@ export const getCurrentUser = async (
       }
     })
   }
+  const roles = user.roles?.split(',')
 
   if (!user && token) {
     const auth0User = await auth0.getProfile(token)
-
+    // console.log('auth0User' , auth0User)
     // otherwise create a new user
     user = await db.user.create({
       data: {
@@ -86,12 +86,18 @@ export const getCurrentUser = async (
   }
 
   // const { roles } = parseJWT({ decoded })
+  // console.log('roles' , roles)
+  // const NAMESPACE = 'https://seattlebasketball.netlify.app'
+
+  // const roles2 = parseJWT({ decoded: decoded, namespace: NAMESPACE }).roles
+  // console.log('roles2' , roles2)
 
   // if (roles) {
-  //   return { ...decoded, roles }
+  //   return { ...decoded, roles, type, token }
   // }
-
-  return { ...decoded,type, token }
+  let retUser = { ...decoded, roles, type, token, id:user.id }
+  // console.log('retUser', retUser)
+  return retUser
 
 
 }

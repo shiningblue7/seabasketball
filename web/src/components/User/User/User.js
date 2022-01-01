@@ -81,6 +81,10 @@ const User = ({ user }) => {
               <th>Name</th>
               <td>{user.name}</td>
             </tr>
+            <tr>
+              <th>Roles</th>
+              <td>{user.roles}</td>
+            </tr>
           </tbody>
         </table>
       </div>

@@ -3,6 +3,7 @@ import { useAuth } from '@redwoodjs/auth'
 import { toast } from '@redwoodjs/web/toast'
 import { FieldError, Label, SelectField } from "@redwoodjs/forms"
 import React, { useState } from 'react';
+
 export const QUERY = gql`
   query FindScheduleQuery {
     schedule: activeSchedule {
@@ -37,16 +38,28 @@ export const Failure = ({ error }) => (
 )
 
 export const Success = ({ schedule, signUps, users }) => {
-  const { logIn,isAuthenticated, userMetadata } = useAuth()
-  // console.log('signUps' , signUps)
+  const { logIn,hasRole, isAuthenticated, userMetadata, currentUser } = useAuth()
   var userGoodList = users;
-  for (var j = 0; signUps.length > j; j++) {
-    var signUpUser = signUps[j]
-    userGoodList = userGoodList.filter((x) => {
-      return x.id != signUpUser.user.id
+  var userGuest = '';
+  if (hasRole('admin')) {
+    for (var j = 0; signUps.length > j; j++) {
+      var signUpUser = signUps[j]
+      userGoodList = userGoodList.filter((user) => {
+        return user.id != signUpUser.user.id
+      })
+    }
+  } else if (currentUser) {
+    userGoodList = userGoodList.filter((user) => {
+      return user.id === currentUser.id
     })
-    // console.log('userGoodList' , userGoodList)
+    for (var j = 0; signUps.length > j; j++) {
+      var signUpUser = signUps[j]
+      if (signUpUser.user.id === currentUser.id) {
+        userGuest = " Guest"
+      }
+    }
   }
+
 
   const CREATE_SIGN_UP_MUTATION = gql`
     mutation CreateSignUpMutation($input: CreateSignUpInput!) {
@@ -105,29 +118,11 @@ export const Success = ({ schedule, signUps, users }) => {
     awaitRefetchQueries: true,
   })
   const onDeleteClick = (id, name) => {
-    // if (confirm('Are you sure you want to remove ' + name + '?')) {
+    if (hasRole('admin')) {
       deleteSignUp({ variables: { id } })
-    // }
-  }
-
-  function sayHello(name) {
-    // alert(`hello, ${name}`);
-    console.log('props', name.target.options)
-  }
-  const [players, setPlayers] = useState([])
-  const printPlayers = (data) => {
-    var newPlayers = []
-    console.log(' data', data)
-    for (var key in data) {
-      // console.log('key ' + key)
-      // console.log('value ' + data[key])
-      if (data[key].value) {
-        console.log('data key value ' + data[key].value)
-        newPlayers.push(data[key].value)
-      }
+    } else if (confirm('Are you sure you want to remove ' + name + '?')) {
+      deleteSignUp({ variables: { id } })
     }
-    setPlayers(newPlayers)
-    return
   }
 
   const MAX_STRING_LENGTH = 20
@@ -179,14 +174,16 @@ export const Success = ({ schedule, signUps, users }) => {
                   <td>{truncate(signup.user.name)}</td>
                   <td>{++count}</td>
                   <td>
+                    { ((currentUser.id === signup.user.id) || hasRole('admin') ) && (
                     <button
                       type="button"
                       title={'Remove signup' + signup.user.name}
-                      // className="rw-button rw-button-small rw-button-red"
+                      className="rw-button rw-button-small rw-button-red"
                       onClick={() => onDeleteClick(signup.id, signup.user.name)}
                     >
                       Remove
                     </button>
+                    ) }
                   </td>
                 </tr>
               ))}
@@ -205,7 +202,7 @@ export const Success = ({ schedule, signUps, users }) => {
             <tbody>
               {userGoodList.map((user) => (
                 <tr key={user.id}>
-                  <td>{user.name}</td>
+                  <td>{user.name} {userGuest}</td>
                   <td>
                     <button
                       type="button"

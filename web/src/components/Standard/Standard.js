@@ -3,8 +3,7 @@ import { useAuth } from '@redwoodjs/auth'
 import { Fragment } from 'react'
 
 const Standard = ({ children }) => {
-  const { logIn, logOut, isAuthenticated, userMetadata } = useAuth()
-  // console.log('userMetadata', userMetadata)
+  const { logIn, logOut, hasRole, isAuthenticated, userMetadata } = useAuth()
   return (
     <>
 
@@ -14,7 +13,7 @@ const Standard = ({ children }) => {
         <nav>
           <ul>
 
-            {isAuthenticated && (
+            { hasRole(['admin']) && (
               <Fragment>
             <li>
               <Link to={routes.users()}>Users</Link>
@@ -28,6 +27,7 @@ const Standard = ({ children }) => {
             </Fragment>
             )}
             <li className='float-right'>
+              {/* <font color="white">{isAuthenticated && userMetadata.name}</font> */}
                {/* {isAuthenticated && userMetadata.name}
                &nbsp; - &nbsp;
                {isAuthenticated && userMetadata.email}
@@ -35,6 +35,7 @@ const Standard = ({ children }) => {
               <button onClick={isAuthenticated ? logOut : logIn}>
                 {isAuthenticated ? 'Log Out' : 'Log In'}
               </button>
+
             </li>
 
 
