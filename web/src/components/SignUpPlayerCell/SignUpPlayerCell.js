@@ -1,4 +1,5 @@
 import { useMutation } from '@redwoodjs/web'
+import { useAuth } from '@redwoodjs/auth'
 import { toast } from '@redwoodjs/web/toast'
 import { FieldError, Label, SelectField } from "@redwoodjs/forms"
 import React, { useState } from 'react';
@@ -36,14 +37,15 @@ export const Failure = ({ error }) => (
 )
 
 export const Success = ({ schedule, signUps, users }) => {
-  console.log('signUps' , signUps)
+  const { logIn,isAuthenticated, userMetadata } = useAuth()
+  // console.log('signUps' , signUps)
   var userGoodList = users;
   for (var j = 0; signUps.length > j; j++) {
     var signUpUser = signUps[j]
     userGoodList = userGoodList.filter((x) => {
       return x.id != signUpUser.user.id
     })
-    console.log('userGoodList' , userGoodList)
+    // console.log('userGoodList' , userGoodList)
   }
 
   const CREATE_SIGN_UP_MUTATION = gql`
@@ -151,73 +153,85 @@ export const Success = ({ schedule, signUps, users }) => {
   }
 
   let count = 1
-  return (
-    <>
-      <article>
-        <h2>
-          {schedule.title} - {new Date(schedule.date).toLocaleString()}
-        </h2>
-      </article>
+  if (isAuthenticated) {
+    return (
+      <>
+        <article>
+          <h2>
+            {schedule.title} - {new Date(schedule.date).toLocaleString()}
+          </h2>
+        </article>
 
-      <div>
-        <h2> Signed Up Players</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Signed Up</th>
-              <th>Order</th>
-              <th>Remove</th>
-              {/* <th>&nbsp;</th> */}
-            </tr>
-          </thead>
-          <tbody>
-            {signUps.map((signup, count) => (
-              <tr key={signup.id}>
-                <td>{truncate(signup.user.name)}</td>
-                <td>{++count}</td>
-                <td>
-                  <button
-                    type="button"
-                    title={'Remove signup' + signup.user.name}
-                    // className="rw-button rw-button-small rw-button-red"
-                    onClick={() => onDeleteClick(signup.id, signup.user.name)}
-                  >
-                    Remove
-                  </button>
-                </td>
+        <div>
+          <h2> Signed Up Players</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Signed Up</th>
+                <th>Order</th>
+                <th>Remove</th>
+                {/* <th>&nbsp;</th> */}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {signUps.map((signup, count) => (
+                <tr key={signup.id}>
+                  <td>{truncate(signup.user.name)}</td>
+                  <td>{++count}</td>
+                  <td>
+                    <button
+                      type="button"
+                      title={'Remove signup' + signup.user.name}
+                      // className="rw-button rw-button-small rw-button-red"
+                      onClick={() => onDeleteClick(signup.id, signup.user.name)}
+                    >
+                      Remove
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
-        <h2>Available Players</h2>
-        <table border="1">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Add</th>
-              {/* <th>&nbsp;</th> */}
-            </tr>
-          </thead>
-          <tbody>
-            {userGoodList.map((user) => (
-              <tr key={user.id}>
-                <td>{user.name}</td>
-                <td>
-                  <button
-                    type="button"
-                    title={'Add to signup' + user.name}
-                    className="rw-button rw-button-small rw-button-green"
-                    onClick={() => onAddClick(user.id, schedule.id)}
-                  >
-                    Add
-                  </button>
-                </td>
+          <h2>Available Players</h2>
+          <table border="1">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Add</th>
+                {/* <th>&nbsp;</th> */}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </>
-  )
+            </thead>
+            <tbody>
+              {userGoodList.map((user) => (
+                <tr key={user.id}>
+                  <td>{user.name}</td>
+                  <td>
+                    <button
+                      type="button"
+                      title={'Add to signup' + user.name}
+                      className="rw-button rw-button-small rw-button-green"
+                      onClick={() => onAddClick(user.id, schedule.id)}
+                    >
+                      Add
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </>
+    )
+              } else {
+                return (
+                  <>
+                    Please login to see schedule
+                    <br />
+                    <button onClick={logIn}>
+                    Log In
+                    </button>
+                  </>
+                )
+              }
 }
