@@ -6,7 +6,7 @@
 # https://redwoodjs.com/docs/app-configuration-redwood-toml
 
 [web]
-  title = "Redwood App"
+  title = "Seattle Basketball"
   port = 8910
   apiUrl = "/.netlify/functions"
   includeEnvironmentVariables = [

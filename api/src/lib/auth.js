@@ -70,7 +70,6 @@ export const getCurrentUser = async (
       }
     })
   }
-  const roles = user.roles?.split(',')
 
   if (!user && token) {
     const auth0User = await auth0.getProfile(token)
@@ -84,7 +83,7 @@ export const getCurrentUser = async (
       }
     })
   }
-
+  const roles = user?.roles?.split(',')
   // const { roles } = parseJWT({ decoded })
   // console.log('roles' , roles)
   // const NAMESPACE = 'https://seattlebasketball.netlify.app'
