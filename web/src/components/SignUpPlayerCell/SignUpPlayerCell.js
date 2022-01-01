@@ -12,7 +12,7 @@ export const QUERY = gql`
       date
       createdAt
     }
-    signUps: activeSignups {
+    activeSignups {
       id
       scheduleId
       userId
@@ -37,7 +37,9 @@ export const Failure = ({ error }) => (
   <div style={{ color: 'red' }}>Error: {error.message}</div>
 )
 
-export const Success = ({ schedule, signUps, users }) => {
+export const Success = ({ schedule, activeSignups, users }) => {
+  const signUps = activeSignups
+  // return <></>
   const { logIn,hasRole, isAuthenticated, userMetadata, currentUser } = useAuth()
   var userGoodList = users;
   var userGuest = '';

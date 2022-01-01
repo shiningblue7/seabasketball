@@ -73,10 +73,18 @@ export const getCurrentUser = async (
 
   if (!user && token) {
     const auth0User = await auth0.getProfile(token)
-    // console.log('auth0User' , auth0User)
+    console.log('auth0User.email' , auth0User.email)
     // otherwise create a new user
-    user = await db.user.create({
-      data: {
+    user = await db.user.upsert({
+      where:{
+        email: auth0User.email,
+      },
+      update: {
+        subject: auth0User.sub,
+        email: auth0User.email,
+        name: auth0User.name
+      },
+      create: {
         subject: auth0User.sub,
         email: auth0User.email,
         name: auth0User.name
