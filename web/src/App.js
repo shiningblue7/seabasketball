@@ -34,7 +34,7 @@ const auth0 = new Auth0Client({
 
 const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
-    <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
+    <RedwoodProvider titleTemplate="%AppTitle">
       <AuthProvider client={auth0} type="auth0">
         <RedwoodApolloProvider>
           <Routes />

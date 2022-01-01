@@ -17,6 +17,9 @@ export const activeSignups = () => {
         active: true,
       },
     },
+    orderBy: {
+      createdAt: 'asc',
+    },
   })
 }
 export const createSignUp = ({ input }) => {
