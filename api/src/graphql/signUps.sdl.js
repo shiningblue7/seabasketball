@@ -10,7 +10,7 @@ export const schema = gql`
 
   type Query {
     activeSignups: [SignUp!]! @skipAuth
-    signUps: [SignUp!]! @skipAuth
+    signUps: [SignUp!]! @requireAuth
     signUp(id: Int!): SignUp @requireAuth
   }
 

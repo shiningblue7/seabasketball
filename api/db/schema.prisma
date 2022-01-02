@@ -27,7 +27,7 @@ model Schedule {
 model SignUp {
   id         Int      @id @default(autoincrement())
   scheduleId Int
-  userId     Int      @unique
+  userId     Int
   schedule   Schedule @relation("ScheduleSignUp", fields: [scheduleId], references: [id], onDelete: Cascade)
   user       User     @relation("UserSignUp", fields: [userId], references: [id], onDelete: Cascade)
   createdAt  DateTime @default(now())
