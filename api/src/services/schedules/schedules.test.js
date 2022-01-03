@@ -21,11 +21,11 @@ describe('schedules', () => {
 
   scenario('creates a schedule', async () => {
     const result = await createSchedule({
-      input: { title: 'String', date: '2021-12-30T21:44:47Z' },
+      input: { title: 'String', date: '2022-01-03T06:04:57Z' },
     })
 
     expect(result.title).toEqual('String')
-    expect(result.date).toEqual('2021-12-30T21:44:47Z')
+    expect(result.date).toEqual('2022-01-03T06:04:57Z')
   })
 
   scenario('updates a schedule', async (scenario) => {

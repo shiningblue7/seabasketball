@@ -1,0 +1,8 @@
+
+.rx-table tbody tr {
+  background-color: #977107f8;
+  border-top-width: 1px;
+}
+.rx-table tbody tr:nth-child(even) {
+  background-color: rgb(219, 72, 14);
+}

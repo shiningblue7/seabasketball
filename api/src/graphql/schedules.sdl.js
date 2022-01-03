@@ -6,6 +6,7 @@ export const schema = gql`
     active: Boolean!
     createdAt: DateTime!
     SignUp: [SignUp]!
+    limit: Int
   }
 
   type Query {
@@ -18,12 +19,14 @@ export const schema = gql`
     title: String!
     date: DateTime!
     active: Boolean!
+    limit: Int
   }
 
   input UpdateScheduleInput {
     title: String
     date: DateTime
     active: Boolean
+    limit: Int
   }
 
   type Mutation {

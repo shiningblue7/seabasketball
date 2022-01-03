@@ -12,6 +12,7 @@ export const QUERY = gql`
       date
       active
       createdAt
+      limit
     }
   }
 `
@@ -23,6 +24,7 @@ const UPDATE_SCHEDULE_MUTATION = gql`
       date
       active
       createdAt
+      limit
     }
   }
 `

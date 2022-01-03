@@ -11,6 +11,7 @@ export const QUERY = gql`
       title
       date
       createdAt
+      limit
     }
     activeSignups {
       id
@@ -38,9 +39,21 @@ export const Failure = ({ error }) => (
   <div style={{ color: 'red' }}>Error: {error.message}</div>
 )
 
-export const Success = ({ schedule, activeSignups, users }) => {
+export const Success = ({ schedule, activeSignups, users, steps, setSteps }) => {
+  // const [steps, setSteps] = useState(0);
+  // const increment = () => {
+  //   // console.log('here' , state)
+  //   setSteps(prevState => prevState + 1)
+  // }
+  // function increment() {
+  //   // console.log('here' , state)
+  //   setSteps(prevState => prevState + 1)
+  // }
+  const scheduleLimit = schedule.limit
   const signUps = activeSignups
-  // return <></>
+  console.log('signUps', signUps)
+  const signUpList = []
+  const queueList = []
   const { logIn,hasRole, isAuthenticated, userMetadata, currentUser } = useAuth()
   var userGoodList = users
   var userGuest = ''
@@ -49,27 +62,22 @@ export const Success = ({ schedule, activeSignups, users }) => {
   if (hasRole('admin')) {
     for (var j = 0; signUps.length > j; j++) {
       var signUpUser = signUps[j]
-      // console.log ('signUpUser.user.id' , signUpUser.user.id)
-      // guestPresent[signUpUser.user.id].count = guestPresent[signUpUser.user.id].count++
-      // if (guestPresent[signUpUser.user.id]) {
-      //   guestPresent[signUpUser.user.id]++
-      // } else {
-      //   guestPresent[signUpUser.user.id] = 1
-      //   countPresent[signUpUser.user.id] = 1
-      // }
       guestPresent[signUpUser.user.id] = guestPresent[signUpUser.user.id] ? guestPresent[signUpUser.user.id]++ : 1
       countPresent[signUpUser.user.id] = countPresent[signUpUser.user.id] ? 0 : 0
       userGoodList = userGoodList.filter((user) => {
         return user.id != signUpUser.user.id
       })
+      if (scheduleLimit > j) {
+        signUpList.push(signUpUser)
+      } else {
+        queueList.push(signUpUser)
+      }
     }
   } else if (currentUser) {
     for (var j = 0; signUps.length > j; j++) {
       var signUpUser = signUps[j]
-      // console.log ('signUpUser.user.id' , signUpUser.user.id)
       guestPresent[signUpUser.user.id] = guestPresent[signUpUser.user.id] ? guestPresent[signUpUser.user.id]++ : 1
       countPresent[signUpUser.user.id] = countPresent[signUpUser.user.id] ? 0 : 0
-      // console.log('guestPresent', guestPresent)
     }
     userGoodList = userGoodList.filter((user) => {
       return user.id === currentUser.id
@@ -80,8 +88,14 @@ export const Success = ({ schedule, activeSignups, users }) => {
         userGoodList = []
         // userGuest = " Guest"
       }
+      if (scheduleLimit > j) {
+        signUpList.push(signUpUser)
+      } else {
+        queueList.push(signUpUser)
+      }
     }
   }
+  console.log('signUpList', signUpList)
 
   const UPDATE_USER_MUTATION = gql`
   mutation UpdateUserMutation($id: Int!, $input: UpdateUserInput!) {
@@ -103,8 +117,6 @@ export const Success = ({ schedule, activeSignups, users }) => {
       awaitRefetchQueries: true,
     }
   )
-
-
 
   const CREATE_SIGN_UP_MUTATION = gql`
     mutation CreateSignUpMutation($input: CreateSignUpInput!) {
@@ -148,11 +160,6 @@ export const Success = ({ schedule, activeSignups, users }) => {
   }
 
   const onAddClick = (userId, scheduleId) => {
-    // if (confirm('Are you sure you want to remove ' + name + '?')) {
-      // deleteSignUp({ variables: { id } })
-    // }
-    // console.log('add user' , userId)
-    // console.log('add schedule' , scheduleId)
     var input= {}
     const castInput = Object.assign(input, {
       scheduleId: parseInt(scheduleId),
@@ -212,7 +219,7 @@ export const Success = ({ schedule, activeSignups, users }) => {
     )
   }
 
-  let count = 1
+
   let logInPage =  (
     <>
       Please login to see schedule
@@ -224,23 +231,13 @@ export const Success = ({ schedule, activeSignups, users }) => {
   )
 
   if (isAuthenticated) {
-    // onClick={() => onDeleteClick(signup.id, signup.user.name)}
-    // let memberButton = (type) => {( <> <button
-    //   type="button"
-    //   title={'Add member' + signup.user.name}
-    //   className="rw-button rw-button-small rw-button-blue"
-    // >
-    //   {type} member
-    // </button>
-    // </>
-    // )}
-    // let guestPresent = {}
-    // console.log('guestPresent' , guestPresent)
-    // console.log('countPresent' , countPresent)
+    // const [steps, setSteps] = useState(0);
+
+    let count = 1
     let signedUpPlayers = (<>
       <article>
         <h2>
-          {schedule.title} - {new Date(schedule.date).toLocaleString()}
+          {schedule.title} (Limit - <font color="red">{schedule.limit}</font>) - {new Date(schedule.date).toLocaleString()}
         </h2>
       </article>
 
@@ -254,11 +251,10 @@ export const Success = ({ schedule, activeSignups, users }) => {
               <th>Remove</th>
               {/* {hasRole('admin') && ( <><th>Member</th></>)} */}
               <th>Member</th>
-              {/* <th>&nbsp;</th> */}
             </tr>
           </thead>
           <tbody>
-            {signUps.map((signup, count) => (
+            {signUpList.map((signup, count) => (
               <tr key={signup.id}>
                 <td>{truncate(signup.user.name)}
                     { countPresent[parseInt(signup.user.id)] >= 1 && ( <> +{ countPresent[parseInt(signup.user.id)] } Guest </>   )}
@@ -273,6 +269,7 @@ export const Success = ({ schedule, activeSignups, users }) => {
                       </button>)
                     }
                 </td>
+                {/* <td>{steps}{setSteps(steps + 1)}</td> */}
                 <td>{++count}</td>
                 <td>
                   { ((currentUser.id === signup.user.id) || hasRole('admin') ) && (
@@ -304,7 +301,7 @@ export const Success = ({ schedule, activeSignups, users }) => {
                       className="rw-button rw-button-small rw-button-black"
                       onClick={() => updateMemberClick(signup.user.id, true)}
                     >
-                      Add member
+                      Set as member
                     </button>
                    </td></>
                    )}
@@ -317,7 +314,7 @@ export const Success = ({ schedule, activeSignups, users }) => {
                       className="rw-button rw-button-small rw-button-orange"
                       onClick={() => updateMemberClick(signup.user.id, false)}
                     >
-                      Remove member
+                      Unset member
                     </button>
                    </td></>
                   )}
@@ -326,8 +323,95 @@ export const Success = ({ schedule, activeSignups, users }) => {
           </tbody>
         </table>
       </div>
+
       </>
 )
+
+let queuePlayers = (<>
+  <div>
+    <h2>Queued Up Players</h2>
+    <table className='rx-table'>
+      <thead>
+        <tr>
+          <th>Signed Up</th>
+          <th>Order</th>
+          <th>Remove</th>
+          {/* {hasRole('admin') && ( <><th>Member</th></>)} */}
+          <th>Member</th>
+        </tr>
+      </thead>
+      <tbody>
+        {queueList.map((signup, count) => (
+          <tr key={signup.id}>
+            <td>{truncate(signup.user.name)}
+                { countPresent[parseInt(signup.user.id)] >= 1 && ( <> +{ countPresent[parseInt(signup.user.id)] } Guest </>   )}
+                <p hidden> { countPresent[parseInt(signup.user.id)]++ }</p>
+                {(( currentUser.id === signup.user.id || hasRole('admin') ) && guestPresent[parseInt(signup.user.id)] < 2 && ++guestPresent[signup.user.id] )
+
+                && (
+                  <button className="rw-button rw-button-small rw-button-blue"
+                  onClick={() => onAddClick(signup.user.id, schedule.id)}
+                  >
+                  Add Guest
+                  </button>)
+                }
+            </td>
+            <td>{++count}</td>
+            <td>
+              { ((currentUser.id === signup.user.id) || hasRole('admin') ) && (
+              <button
+                type="button"
+                title={'Remove signup' + signup.user.name}
+                className="rw-button rw-button-small rw-button-red"
+                onClick={() => onDeleteClick(signup.id, signup.user.name)}
+              >
+                Remove
+              </button>
+              ) }
+            </td>
+            {!hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && signup.user.member && (
+               <><td>
+               Member
+               </td></>
+               )}
+               {!hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && !signup.user.member && (
+               <><td>
+               Non Member
+               </td></>
+               )}
+            {hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && !signup.user.member && (
+               <><td>
+               <button
+                  type="button"
+                  title={'Set member' + signup.user.name}
+                  className="rw-button rw-button-small rw-button-black"
+                  onClick={() => updateMemberClick(signup.user.id, true)}
+                >
+                  Set as member
+                </button>
+               </td></>
+               )}
+            {/* {hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && !signup.user.member && ( <><td>Add as Member</td></>)} */}
+            {hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && signup.user.member && (
+              <><td>
+               <button
+                  type="button"
+                  title={'Remove member' + signup.user.name}
+                  className="rw-button rw-button-small rw-button-orange"
+                  onClick={() => updateMemberClick(signup.user.id, false)}
+                >
+                  Unset member
+                </button>
+               </td></>
+              )}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  </>
+)
+
 let availablePlayers = userGoodList.length > 0 && (
   <><div>
     <h2>Available Players</h2>
@@ -363,7 +447,9 @@ let availablePlayers = userGoodList.length > 0 && (
 
     let page = (<>
                 {signedUpPlayers}
+                {queueList.length > 0 && queuePlayers}
                 {availablePlayers}
+
                 </>)
     return page
   } else {

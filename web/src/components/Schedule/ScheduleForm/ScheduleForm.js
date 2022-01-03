@@ -6,6 +6,7 @@ import {
   TextField,
   DatetimeLocalField,
   CheckboxField,
+  NumberField,
   Submit,
 } from '@redwoodjs/forms'
 
@@ -79,6 +80,22 @@ const ScheduleForm = (props) => {
         />
 
         <FieldError name="active" className="rw-field-error" />
+
+        <Label
+          name="limit"
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
+        >
+          Limit
+        </Label>
+        <NumberField
+          name="limit"
+          defaultValue={props.schedule?.limit}
+          className="rw-input"
+          errorClassName="rw-input rw-input-error"
+        />
+
+        <FieldError name="limit" className="rw-field-error" />
 
         <div className="rw-button-group">
           <Submit disabled={props.loading} className="rw-button rw-button-blue">

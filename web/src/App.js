@@ -12,6 +12,7 @@ import './scaffold.css'
 // import 'cirrus-ui';
 import './base.css'
 import './nav.css'
+import './table.css'
 
 const auth0 = new Auth0Client({
   domain: process.env.AUTH0_DOMAIN,

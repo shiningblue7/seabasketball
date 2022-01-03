@@ -77,6 +77,10 @@ const Schedule = ({ schedule }) => {
               <th>Created at</th>
               <td>{timeTag(schedule.createdAt)}</td>
             </tr>
+            <tr>
+              <th>Limit</th>
+              <td>{schedule.limit}</td>
+            </tr>
           </tbody>
         </table>
       </div>

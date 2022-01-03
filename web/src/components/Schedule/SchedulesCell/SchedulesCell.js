@@ -10,6 +10,7 @@ export const QUERY = gql`
       date
       active
       createdAt
+      limit
     }
   }
 `

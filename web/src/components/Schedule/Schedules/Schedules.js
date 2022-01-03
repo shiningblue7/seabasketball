@@ -69,6 +69,7 @@ const SchedulesList = ({ schedules }) => {
             <th>Date</th>
             <th>Active</th>
             <th>Created at</th>
+            <th>Limit</th>
             <th>&nbsp;</th>
           </tr>
         </thead>
@@ -80,6 +81,7 @@ const SchedulesList = ({ schedules }) => {
               <td>{timeTag(schedule.date)}</td>
               <td>{checkboxInputTag(schedule.active)}</td>
               <td>{timeTag(schedule.createdAt)}</td>
+              <td>{truncate(schedule.limit)}</td>
               <td>
                 <nav className="rw-table-actions">
                   <Link
