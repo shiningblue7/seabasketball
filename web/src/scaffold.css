@@ -186,6 +186,20 @@
 .rw-button.rw-button-red:hover {
   background-color: #c53030;
 }
+.rw-button.rw-button-orange {
+  background-color: #e5813e;
+  color: #fff;
+}
+.rw-button.rw-button-orange:hover {
+  background-color: #cab34e;
+}
+.rw-button.rw-button-black {
+  background-color: #000000;
+  color: #fff;
+}
+.rw-button.rw-button-black:hover {
+  background-color: #202020;
+}
 .rw-button-icon {
   font-size: 1.25rem;
   line-height: 1;

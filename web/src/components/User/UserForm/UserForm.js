@@ -4,6 +4,7 @@ import {
   FieldError,
   Label,
   TextField,
+  CheckboxField,
   Submit,
 } from '@redwoodjs/forms'
 
@@ -93,6 +94,22 @@ const UserForm = (props) => {
         />
 
         <FieldError name="roles" className="rw-field-error" />
+
+        <Label
+          name="member"
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
+        >
+          Member
+        </Label>
+        <CheckboxField
+          name="member"
+          defaultChecked={props.user?.member}
+          className="rw-input"
+          errorClassName="rw-input rw-input-error"
+        />
+
+        <FieldError name="member" className="rw-field-error" />
 
         <div className="rw-button-group">
           <Submit disabled={props.loading} className="rw-button rw-button-blue">

@@ -1,7 +1,7 @@
 import { useMutation } from '@redwoodjs/web'
 import { useAuth } from '@redwoodjs/auth'
 import { toast } from '@redwoodjs/web/toast'
-import { FieldError, Label, SelectField } from "@redwoodjs/forms"
+import { ButtonField, FieldError, Label, SelectField } from "@redwoodjs/forms"
 import React, { useState } from 'react';
 
 export const QUERY = gql`
@@ -19,6 +19,7 @@ export const QUERY = gql`
       user {
         id
         name
+        member
       }
       createdAt
     }
@@ -82,6 +83,28 @@ export const Success = ({ schedule, activeSignups, users }) => {
     }
   }
 
+  const UPDATE_USER_MUTATION = gql`
+  mutation UpdateUserMutation($id: Int!, $input: UpdateUserInput!) {
+    updateUser(id: $id, input: $input) {
+      member
+    }
+  }
+  `
+  const [updateMember, { updateMemberloading, updateMembererror }] = useMutation(
+    UPDATE_USER_MUTATION,
+    {
+      onCompleted: () => {
+        // toast.success('SignUp created')
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      },
+      refetchQueries: [{ query: QUERY }],
+      awaitRefetchQueries: true,
+    }
+  )
+
+
 
   const CREATE_SIGN_UP_MUTATION = gql`
     mutation CreateSignUpMutation($input: CreateSignUpInput!) {
@@ -90,6 +113,8 @@ export const Success = ({ schedule, activeSignups, users }) => {
       }
     }
   `
+
+
   const [createSignUp, { loading, error }] = useMutation(
     CREATE_SIGN_UP_MUTATION,
     {
@@ -103,6 +128,24 @@ export const Success = ({ schedule, activeSignups, users }) => {
       awaitRefetchQueries: true,
     }
   )
+
+  const updateMemberClick = (userId, memberBoolean) => {
+    // if (confirm('Are you sure you want to remove ' + name + '?')) {
+      // deleteSignUp({ variables: { id } })
+    // }
+    console.log('add user' , userId)
+    console.log('memberBoolean ' , memberBoolean)
+    var input= {}
+    const castInput = Object.assign(input, {
+      member: memberBoolean,
+      // userId: parseInt(userId),
+    })
+    updateMember({ variables: {
+                              id: parseInt(userId),
+                              input: castInput }
+                   }
+                )
+  }
 
   const onAddClick = (userId, scheduleId) => {
     // if (confirm('Are you sure you want to remove ' + name + '?')) {
@@ -181,6 +224,16 @@ export const Success = ({ schedule, activeSignups, users }) => {
   )
 
   if (isAuthenticated) {
+    // onClick={() => onDeleteClick(signup.id, signup.user.name)}
+    // let memberButton = (type) => {( <> <button
+    //   type="button"
+    //   title={'Add member' + signup.user.name}
+    //   className="rw-button rw-button-small rw-button-blue"
+    // >
+    //   {type} member
+    // </button>
+    // </>
+    // )}
     // let guestPresent = {}
     // console.log('guestPresent' , guestPresent)
     // console.log('countPresent' , countPresent)
@@ -199,6 +252,8 @@ export const Success = ({ schedule, activeSignups, users }) => {
               <th>Signed Up</th>
               <th>Order</th>
               <th>Remove</th>
+              {/* {hasRole('admin') && ( <><th>Member</th></>)} */}
+              <th>Member</th>
               {/* <th>&nbsp;</th> */}
             </tr>
           </thead>
@@ -231,6 +286,41 @@ export const Success = ({ schedule, activeSignups, users }) => {
                   </button>
                   ) }
                 </td>
+                {!hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && signup.user.member && (
+                   <><td>
+                   Member
+                   </td></>
+                   )}
+                   {!hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && !signup.user.member && (
+                   <><td>
+                   Non Member
+                   </td></>
+                   )}
+                {hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && !signup.user.member && (
+                   <><td>
+                   <button
+                      type="button"
+                      title={'Add member' + signup.user.name}
+                      className="rw-button rw-button-small rw-button-black"
+                      onClick={() => updateMemberClick(signup.user.id, true)}
+                    >
+                      Add member
+                    </button>
+                   </td></>
+                   )}
+                {/* {hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && !signup.user.member && ( <><td>Add as Member</td></>)} */}
+                {hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && signup.user.member && (
+                  <><td>
+                   <button
+                      type="button"
+                      title={'Remove member' + signup.user.name}
+                      className="rw-button rw-button-small rw-button-orange"
+                      onClick={() => updateMemberClick(signup.user.id, false)}
+                    >
+                      Remove member
+                    </button>
+                   </td></>
+                  )}
               </tr>
             ))}
           </tbody>

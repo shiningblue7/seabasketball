@@ -21,9 +21,6 @@ const Standard = ({ children }) => {
             <li>
               <Link to={routes.schedules()}>Schedules</Link>
             </li>
-            <li>
-              <Link to={routes.signUps()}>Signups</Link>
-            </li>
             </Fragment>
             )}
             <li className='float-right'>

@@ -85,6 +85,10 @@ const User = ({ user }) => {
               <th>Roles</th>
               <td>{user.roles}</td>
             </tr>
+            <tr>
+              <th>Member</th>
+              <td>{checkboxInputTag(user.member)}</td>
+            </tr>
           </tbody>
         </table>
       </div>

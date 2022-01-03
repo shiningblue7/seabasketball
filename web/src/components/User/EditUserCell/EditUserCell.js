@@ -14,6 +14,7 @@ export const QUERY = gql`
       email
       name
       roles
+      member
     }
   }
 `
@@ -27,6 +28,7 @@ const UPDATE_USER_MUTATION = gql`
       email
       name
       roles
+      member
     }
   }
 `

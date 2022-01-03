@@ -42,4 +42,5 @@ model User {
   name      String   @default("")
   SignUp    SignUp[] @relation("UserSignUp")
   roles     String?
+  member    Boolean?
 }

@@ -71,6 +71,7 @@ const UsersList = ({ users }) => {
             <th>Email</th>
             <th>Name</th>
             <th>Roles</th>
+            <th>Member</th>
             <th>&nbsp;</th>
           </tr>
         </thead>
@@ -84,6 +85,7 @@ const UsersList = ({ users }) => {
               <td>{truncate(user.email)}</td>
               <td>{truncate(user.name)}</td>
               <td>{truncate(user.roles)}</td>
+              <td>{checkboxInputTag(user.member)}</td>
               <td>
                 <nav className="rw-table-actions">
                   <Link

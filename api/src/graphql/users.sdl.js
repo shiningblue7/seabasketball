@@ -8,6 +8,7 @@ export const schema = gql`
     name: String!
     SignUp: [SignUp]!
     roles: String
+    member: Boolean
   }
 
   type Query {
@@ -20,6 +21,7 @@ export const schema = gql`
     email: String!
     name: String!
     roles: String
+    member: Boolean
   }
 
   input UpdateUserInput {
@@ -27,6 +29,7 @@ export const schema = gql`
     email: String
     name: String
     roles: String
+    member: Boolean
   }
 
   type Mutation {

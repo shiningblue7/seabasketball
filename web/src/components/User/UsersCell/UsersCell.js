@@ -12,6 +12,7 @@ export const QUERY = gql`
       email
       name
       roles
+      member
     }
   }
 `
