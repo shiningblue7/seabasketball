@@ -28,6 +28,9 @@ const NewSchedule = () => {
   const onSave = (input) => {
     createSchedule({ variables: { input } })
   }
+  let scheduleDefaultValue ={
+    limit : 15
+  }
 
   return (
     <div className="rw-segment">
@@ -35,7 +38,7 @@ const NewSchedule = () => {
         <h2 className="rw-heading rw-heading-secondary">New Schedule</h2>
       </header>
       <div className="rw-segment-main">
-        <ScheduleForm onSave={onSave} loading={loading} error={error} />
+        <ScheduleForm onSave={onSave} schedule={scheduleDefaultValue} loading={loading} error={error} />
       </div>
     </div>
   )

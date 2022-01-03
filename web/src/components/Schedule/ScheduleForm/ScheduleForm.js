@@ -12,6 +12,10 @@ import {
 
 const formatDatetime = (value) => {
   if (value) {
+    var GMTTime = new Date(value)
+    //not sure why we have to add 120000, by default 60000 should work
+    value = new Date( GMTTime.getTime() + ( GMTTime.getTimezoneOffset() * 120000 ) ).toISOString();
+
     return value.replace(/:\d{2}\.\d{3}\w/, '')
   }
 }
@@ -58,6 +62,7 @@ const ScheduleForm = (props) => {
         <DatetimeLocalField
           name="date"
           defaultValue={formatDatetime(props.schedule?.date)}
+          // defaultValue="2018-06-12T19:30"
           className="rw-input"
           errorClassName="rw-input rw-input-error"
           validation={{ required: true }}

@@ -34,7 +34,7 @@ export const QUERY = gql`
 
 export const Loading = () => <div>Loading...</div>
 
-export const Empty = () => <div>Empty</div>
+export const Empty = () => <div>Please bug Ronald to make a schedule</div>
 
 export const Failure = ({ error }) => (
   <div style={{ color: 'red' }}>Error: {error.message}</div>
@@ -283,18 +283,18 @@ export const Success = ({ schedule, activeSignups, users, steps, setSteps }) => 
                   </button>
                   ) }
                 </td>
+                <td>
                 {!hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && signup.user.member && (
-                   <><td>
+                   <>
                    Member
-                   </td></>
+                   </>
                    )}
                    {!hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && !signup.user.member && (
-                   <><td>
+                   <>
                    Non Member
-                   </td></>
+                   </>
                    )}
                 {hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && !signup.user.member && (
-                   <><td>
                    <button
                       type="button"
                       title={'Add member' + signup.user.name}
@@ -303,11 +303,9 @@ export const Success = ({ schedule, activeSignups, users, steps, setSteps }) => 
                     >
                       Set as member
                     </button>
-                   </td></>
                    )}
                 {/* {hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && !signup.user.member && ( <><td>Add as Member</td></>)} */}
                 {hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && signup.user.member && (
-                  <><td>
                    <button
                       type="button"
                       title={'Remove member' + signup.user.name}
@@ -316,8 +314,8 @@ export const Success = ({ schedule, activeSignups, users, steps, setSteps }) => 
                     >
                       Unset member
                     </button>
-                   </td></>
                   )}
+                  </td>
               </tr>
             ))}
           </tbody>
@@ -369,18 +367,18 @@ let queuePlayers = (<>
               </button>
               ) }
             </td>
+            <td>
             {!hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && signup.user.member && (
-               <><td>
+               <>
                Member
-               </td></>
+               </>
                )}
                {!hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && !signup.user.member && (
-               <><td>
+               <>
                Non Member
-               </td></>
+               </>
                )}
             {hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && !signup.user.member && (
-               <><td>
                <button
                   type="button"
                   title={'Set member' + signup.user.name}
@@ -389,11 +387,9 @@ let queuePlayers = (<>
                 >
                   Set as member
                 </button>
-               </td></>
                )}
             {/* {hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && !signup.user.member && ( <><td>Add as Member</td></>)} */}
             {hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && signup.user.member && (
-              <><td>
                <button
                   type="button"
                   title={'Remove member' + signup.user.name}
@@ -402,8 +398,8 @@ let queuePlayers = (<>
                 >
                   Unset member
                 </button>
-               </td></>
               )}
+              </td>
           </tr>
         ))}
       </tbody>
