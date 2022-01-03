@@ -16,7 +16,33 @@ export const activeSchedule = () => {
   })
 }
 
+async function disableActive(excludeId) {
+  let schedules = await db.schedule.findMany({
+    where: { active: true },
+  })
+  for (const schedule of schedules) {
+    if (schedule.id == excludeId) {
+      continue
+    }
+
+    let castData = Object.assign(schedule, {
+      active: false,
+    })
+    let id = schedule.id
+    delete castData.id
+    let scheduleRec = await db.schedule.update({
+      data: castData,
+      where: { id: id },
+    })
+  }
+  return
+}
+
 export const createSchedule = async ({ input }) => {
+  if (input.active == true) {
+    disableActive()
+  }
+
   let record = await db.schedule.create({
     data: input,
   })
@@ -25,8 +51,6 @@ export const createSchedule = async ({ input }) => {
   let members = await db.user.findMany({
     where: { member: true },
   })
-
-
 
   async function createThem (members) {
     for (const member of members) {
@@ -48,7 +72,11 @@ export const createSchedule = async ({ input }) => {
   return record
 }
 
-export const updateSchedule = ({ id, input }) => {
+export const updateSchedule = async ({ id, input }) => {
+  if (input.active == true) {
+    disableActive(id)
+  }
+
   return db.schedule.update({
     data: input,
     where: { id },

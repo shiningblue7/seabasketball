@@ -1,6 +1,7 @@
 import { useMutation } from '@redwoodjs/web'
 import { useAuth } from '@redwoodjs/auth'
 import { toast } from '@redwoodjs/web/toast'
+import { Toaster } from '@redwoodjs/web/toast'
 import { ButtonField, FieldError, Label, SelectField } from "@redwoodjs/forms"
 import React, { useState } from 'react';
 
@@ -51,7 +52,7 @@ export const Success = ({ schedule, activeSignups, users, steps, setSteps }) => 
   // }
   const scheduleLimit = schedule.limit
   const signUps = activeSignups
-  console.log('signUps', signUps)
+  // console.log('signUps', signUps)
   const signUpList = []
   const queueList = []
   const { logIn,hasRole, isAuthenticated, userMetadata, currentUser } = useAuth()
@@ -95,7 +96,7 @@ export const Success = ({ schedule, activeSignups, users, steps, setSteps }) => 
       }
     }
   }
-  console.log('signUpList', signUpList)
+  // console.log('signUpList', signUpList)
 
   const UPDATE_USER_MUTATION = gql`
   mutation UpdateUserMutation($id: Int!, $input: UpdateUserInput!) {
@@ -108,7 +109,7 @@ export const Success = ({ schedule, activeSignups, users, steps, setSteps }) => 
     UPDATE_USER_MUTATION,
     {
       onCompleted: () => {
-        // toast.success('SignUp created')
+        toast.success('Member updated')
       },
       onError: (error) => {
         toast.error(error.message)
@@ -126,12 +127,11 @@ export const Success = ({ schedule, activeSignups, users, steps, setSteps }) => 
     }
   `
 
-
   const [createSignUp, { loading, error }] = useMutation(
     CREATE_SIGN_UP_MUTATION,
     {
       onCompleted: () => {
-        // toast.success('SignUp created')
+        toast.success('Signed up')
       },
       onError: (error) => {
         toast.error(error.message)
@@ -145,8 +145,8 @@ export const Success = ({ schedule, activeSignups, users, steps, setSteps }) => 
     // if (confirm('Are you sure you want to remove ' + name + '?')) {
       // deleteSignUp({ variables: { id } })
     // }
-    console.log('add user' , userId)
-    console.log('memberBoolean ' , memberBoolean)
+    // console.log('add user' , userId)
+    // console.log('memberBoolean ' , memberBoolean)
     var input= {}
     const castInput = Object.assign(input, {
       member: memberBoolean,
@@ -178,7 +178,7 @@ export const Success = ({ schedule, activeSignups, users, steps, setSteps }) => 
   `
   const [deleteSignUp] = useMutation(DELETE_SIGNUP_MUTATION, {
     onCompleted: () => {
-      toast.success('Sign Up deleted')
+      toast.success('Sign Up Deleted')
     },
     onError: (error) => {
       toast.error(error.message)
@@ -446,6 +446,10 @@ let availablePlayers = userGoodList.length > 0 && (
   )
 
     let page = (<>
+                <Toaster
+                  position="top-center"
+                  toastOptions={{success: { duration: 3000 } }}
+                />
                 {signedUpPlayers}
                 {queueList.length > 0 && queuePlayers}
                 {availablePlayers}
