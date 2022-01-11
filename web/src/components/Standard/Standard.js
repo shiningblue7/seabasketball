@@ -12,7 +12,9 @@ const Standard = ({ children }) => {
 
         <nav>
           <ul>
-
+            <li>
+            <Link to={routes.home()}>Home</Link>
+            </li>
             { hasRole(['admin']) && (
               <Fragment>
             <li>

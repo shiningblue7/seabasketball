@@ -20,12 +20,12 @@ const Routes = () => {
   return (
     <Router>
     <Route path="/signup" page={SignupPage} name="signup" />
-    <Set wrap={SchedulesLayout}>
+    {/* <Set wrap={SchedulesLayout}>
     <Route path="/schedules/new" page={ScheduleNewSchedulePage} name="newSchedule" />
     <Route path="/schedules/{id:Int}/edit" page={ScheduleEditSchedulePage} name="editSchedule" />
     <Route path="/schedules/{id:Int}" page={ScheduleSchedulePage} name="schedule" />
     <Route path="/schedules" page={ScheduleSchedulesPage} name="schedules" />
-    </Set>
+    </Set> */}
     {/* <Route path="/test" page={TestPage} name="test" /> */}
     <Set wrap={SignUpsLayout}>
       <Route path="/sign-ups/new" page={SignUpNewSignUpPage} name="newSignUp" />
@@ -33,12 +33,12 @@ const Routes = () => {
       <Route path="/sign-ups/{id:Int}" page={SignUpSignUpPage} name="signUp" />
       <Route path="/sign-ups" page={SignUpSignUpsPage} name="signUps" />
     </Set>
-    <Set wrap={UsersLayout}>
+    {/* <Set wrap={UsersLayout}>
       <Route path="/users/new" page={UserNewUserPage} name="newUser" />
       <Route path="/users/{id:Int}/edit" page={UserEditUserPage} name="editUser" />
       <Route path="/users/{id:Int}" page={UserUserPage} name="user" />
       <Route path="/users" page={UserUsersPage} name="users" />
-    </Set>
+    </Set> */}
     {/* <Private unauthenticated='home'>
       <Set wrap={PostsLayout}>
         <Route path="/admin/posts/new" page={PostNewPostPage} name="newPost" />
@@ -56,6 +56,14 @@ const Routes = () => {
       {/* <Set wrap={BlogLayout}> */}
       <Set wrap={Standard}>
         <Route path="/" page={HomePage} name="home" unauthenticated='about' />
+        <Route path="/users/new" page={UserNewUserPage} name="newUser" />
+        <Route path="/users/{id:Int}/edit" page={UserEditUserPage} name="editUser" />
+        <Route path="/users/{id:Int}" page={UserUserPage} name="user" />
+        <Route path="/users" page={UserUsersPage} name="users" />
+        <Route path="/schedules/new" page={ScheduleNewSchedulePage} name="newSchedule" />
+        <Route path="/schedules/{id:Int}/edit" page={ScheduleEditSchedulePage} name="editSchedule" />
+        <Route path="/schedules/{id:Int}" page={ScheduleSchedulePage} name="schedule" />
+        <Route path="/schedules" page={ScheduleSchedulesPage} name="schedules" />
       </Set>
       <Route notfound page={NotFoundPage} />
     </Router>
