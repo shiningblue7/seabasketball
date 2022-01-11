@@ -4,6 +4,7 @@ import { toast } from '@redwoodjs/web/toast'
 import { Toaster } from '@redwoodjs/web/toast'
 import { ButtonField, FieldError, Label, SelectField } from "@redwoodjs/forms"
 import React, { useState } from 'react';
+import OrderWidget from '../OrderWidget/OrderWidget'
 
 export const QUERY = gql`
   query FindScheduleQuery {
@@ -40,7 +41,9 @@ export const Failure = ({ error }) => (
   <div style={{ color: 'red' }}>Error: {error.message}</div>
 )
 
-export const Success = ({ schedule, activeSignups, users, steps, setSteps }) => {
+export const Success = ({ schedule, activeSignups, users}) => {
+  // const[activeSignups, setActiveSignups] = useState(activeSignupsData)
+  // console.log('activeSignups',  activeSignups)
   // const [steps, setSteps] = useState(0);
   // const increment = () => {
   //   // console.log('here' , state)
@@ -270,7 +273,11 @@ export const Success = ({ schedule, activeSignups, users, steps, setSteps }) => 
                     }
                 </td>
                 {/* <td>{steps}{setSteps(steps + 1)}</td> */}
-                <td>{++count}</td>
+                <td>{++count}
+                  {hasRole('admin') && (
+                    <OrderWidget schedule={schedule} marker={{QUERY:QUERY, count: count, currentSignUpId: signup.id}} activeSignups={activeSignups} />
+                  ) }
+                </td>
                 <td>
                   { ((currentUser.id === signup.user.id) || hasRole('admin') ) && (
                   <button

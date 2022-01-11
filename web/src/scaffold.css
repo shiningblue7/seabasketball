@@ -164,6 +164,14 @@
   padding: 0.25rem 0.5rem;
   line-height: inherit;
 }
+.rw-button.rw-button-purple {
+  background-color: hsl(345, 47%, 30%);
+  color: #fff;
+}
+.rw-button.rw-button-purple:hover {
+  background-color: #a24be9;
+  color: #fff;
+}
 .rw-button.rw-button-green {
   background-color: #48bb78;
   color: #fff;

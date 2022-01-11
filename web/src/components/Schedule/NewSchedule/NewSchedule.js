@@ -2,6 +2,7 @@ import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 import { navigate, routes } from '@redwoodjs/router'
 import ScheduleForm from 'src/components/Schedule/ScheduleForm'
+import { useState } from 'react'
 
 const CREATE_SCHEDULE_MUTATION = gql`
   mutation CreateScheduleMutation($input: CreateScheduleInput!) {
@@ -12,6 +13,7 @@ const CREATE_SCHEDULE_MUTATION = gql`
 `
 
 const NewSchedule = () => {
+
   const [createSchedule, { loading, error }] = useMutation(
     CREATE_SCHEDULE_MUTATION,
     {
