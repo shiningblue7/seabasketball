@@ -275,7 +275,7 @@ export const Success = ({ schedule, activeSignups, users}) => {
                 {/* <td>{steps}{setSteps(steps + 1)}</td> */}
                 <td>{++count}
                   {hasRole('admin') && (
-                    <OrderWidget schedule={schedule} marker={{QUERY, count, currentSignUpId: signup.id}} activeSignups={activeSignups} />
+                    <OrderWidget schedule={schedule} marker={{QUERY, count, currentSignUpId: signup.id}} activeSignups={activeSignups} queueList={queueList}/>
                   ) }
                 </td>
                 <td>
@@ -361,7 +361,12 @@ let queuePlayers = (<>
                   </button>)
                 }
             </td>
-            <td>{++count}</td>
+            {/* <td>{++count}</td> */}
+            <td>{++count}
+                  {hasRole('admin') && (
+                    <OrderWidget schedule={schedule} marker={{QUERY, count, currentSignUpId: signup.id, queue: true}} activeSignups={activeSignups} queueList={queueList}/>
+                  ) }
+            </td>
             <td>
               { ((currentUser.id === signup.user.id) || hasRole('admin') ) && (
               <button

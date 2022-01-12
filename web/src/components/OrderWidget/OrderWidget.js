@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
-const OrderWidget = ({activeSignups, marker}) => {
+const OrderWidget = ({activeSignups, marker, queueList}) => {
 
   const UPDATE_SIGNUP_MUTATION = gql`
   mutation swapSignupPositions($id1: Int!, $id2: Int!) {
@@ -73,7 +73,7 @@ const OrderWidget = ({activeSignups, marker}) => {
 
   let orderButton = (
   <>
-  {marker.count > 1 && (
+  {( marker.queue || marker.count > 1 ) && (
     <>
     <button
       border="1"
@@ -85,7 +85,7 @@ const OrderWidget = ({activeSignups, marker}) => {
     &nbsp;&nbsp;&nbsp;</>
   )}
 
-    {marker.count < activeSignups.length && (
+    {( (marker.queue && marker.count < queueList.length ) || (!marker.queue && marker.count < activeSignups.length) ) && (
     <button
       border="1"
       onClick={moveDown}
@@ -94,6 +94,7 @@ const OrderWidget = ({activeSignups, marker}) => {
     Down
     </button>
     )}
+
     </>
 
   )
