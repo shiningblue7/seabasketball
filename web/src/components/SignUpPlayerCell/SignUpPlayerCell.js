@@ -275,7 +275,7 @@ export const Success = ({ schedule, activeSignups, users}) => {
                 {/* <td>{steps}{setSteps(steps + 1)}</td> */}
                 <td>{++count}
                   {hasRole('admin') && (
-                    <OrderWidget schedule={schedule} marker={{QUERY:QUERY, count: count, currentSignUpId: signup.id}} activeSignups={activeSignups} />
+                    <OrderWidget schedule={schedule} marker={{QUERY, count, currentSignUpId: signup.id}} activeSignups={activeSignups} />
                   ) }
                 </td>
                 <td>

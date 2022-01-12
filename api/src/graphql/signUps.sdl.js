@@ -25,6 +25,7 @@ export const schema = gql`
   }
 
   type Mutation {
+    swapSignupPositions(id1: Int!, id2: Int!): [SignUp]! @requireAuth
     createSignUp(input: CreateSignUpInput!): SignUp! @requireAuth
     updateSignUp(id: Int!, input: UpdateSignUpInput!): SignUp! @requireAuth
     deleteSignUp(id: Int!): SignUp! @requireAuth

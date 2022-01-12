@@ -35,6 +35,30 @@ export const updateSignUp = ({ id, input }) => {
   })
 }
 
+export const swapSignupPositions = async ({ id1, id2})=>{
+  let signups = await db.signUp.findMany({
+    where: { OR: [{id: id1}, {id: id2}]}
+  })
+
+  await db.signUp.update({
+    where: {id: signups[1].id},
+    data: {
+      userId : signups[0].userId
+    }
+  })
+
+  await db.signUp.update({
+    where: {id: signups[0].id},
+    data: {
+      userId : signups[1].userId
+    }
+  })
+
+  return await db.signUp.findMany({
+    where: { OR: [{id: id1}, {id: id2}]}
+  })
+}
+
 export const deleteSignUp = ({ id }) => {
   return db.signUp.delete({
     where: { id },

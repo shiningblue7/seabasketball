@@ -2,20 +2,20 @@ import React, { useState, useContext } from 'react';
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
-const OrderWidget = ({activeSignups, marker, setActiveSignups, currentSignUpId, schedule, QUERY}) => {
+const OrderWidget = ({activeSignups, marker}) => {
 
   const UPDATE_SIGNUP_MUTATION = gql`
-  mutation UpdateSignUpMutation($id: Int!, $input: UpdateSignUpInput!) {
-    updateSignUp(id: $id, input: $input) {
-      userId
-    }
+  mutation swapSignupPositions($id1: Int!, $id2: Int!) {
+      swapSignupPositions(id1: $id1, id2: $id2) {
+        userId
+      }
   }
   `
   const [updateSignUp, { updateSignUploading, updateSignUperror }] = useMutation(
     UPDATE_SIGNUP_MUTATION,
     {
       onCompleted: () => {
-        toast.success('SignUp updated')
+        toast.success('Sign Up updated')
       },
       onError: (error) => {
         toast.error(error.message)
@@ -26,92 +26,49 @@ const OrderWidget = ({activeSignups, marker, setActiveSignups, currentSignUpId, 
   )
 
   let moveUp = (signUpId) => {
-    // console.log('activeSignups', activeSignups)
-    // console.log('marker', marker)
-
-    const input = []
-    let prevUserId = ''
+    let localInput = {}
     let prevId = ''
     activeSignups.forEach(element => {
-
       if (element.id == marker.currentSignUpId ) {
-        const prevObj = Object.assign({}, {
-          userId: parseInt(element.userId)
-        })
-        input.push( {
-          variables: {
-              id: parseInt(prevId),
-              input: prevObj
-          }
-        })
-
-        const nextObj = Object.assign({}, {
-          userId: parseInt(prevUserId)
-        })
-        input.push( {
-          variables: {
-              id: parseInt(marker.currentSignUpId),
-              input: nextObj
-          }
-        })
+        localInput = {
+            variables:{
+              id1 : parseInt(prevId),
+              id2 : parseInt(marker.currentSignUpId)
+            }
+        }
         return
       }
       prevId = element.id
-      prevUserId = element.userId
     });
 
-    // console.log('input' , input)
+    updateSignUp(localInput)
 
-    input.forEach(localInput => {
-      updateSignUp(localInput)
-      }
-    )
   }
 
   let moveDown = (signUpId) => {
-    const input = []
-    let prevUserId = ''
+    let localInput = {}
     let prevId = ''
     let updateIt = ''
     activeSignups.forEach(element => {
       if (updateIt) {
-        const prevObj = Object.assign({}, {
-          userId: parseInt(prevUserId)
-        })
-        input.push( {
+        localInput = {
           variables: {
-              id: parseInt(element.id),
-              input: prevObj
+              id1: parseInt(element.id),
+              id2: parseInt(marker.currentSignUpId)
           }
-        })
-
-        const nextObj = Object.assign({}, {
-          userId: parseInt(element.userId)
-        })
-        input.push( {
-          variables: {
-              id: parseInt(prevId),
-              input: nextObj
-          }
-        })
+        }
         updateIt = false
+        return
       }
-
       prevId = element.id
-      prevUserId = element.userId
 
       if (element.id == marker.currentSignUpId ) {
         updateIt = true
       }
     });
 
-    // console.log('input' , input)
+    updateSignUp(localInput)
 
-    input.forEach(localInput => {
-      // console.log('localInput', localInput)
-      updateSignUp(localInput)
-      }
-    )
   }
 
   let orderButton = (
