@@ -241,7 +241,7 @@ export const Success = ({ schedule, activeSignups, users}) => {
     </>
   )
 
-  if (isAuthenticated) {
+
     // const [steps, setSteps] = useState(0);
 
     let count = 1
@@ -302,17 +302,17 @@ export const Success = ({ schedule, activeSignups, users}) => {
                 </td>
                 <td>
                 {!hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && signup.user.member && (
-                   <>
-                   Member
-                   </>
-                   )}
-                   {!hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && !signup.user.member && (
-                   <>
-                   Non Member
-                   </>
-                   )}
+                  <>
+                  Member
+                  </>
+                  )}
+                  {!hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && !signup.user.member && (
+                  <>
+                  Non Member
+                  </>
+                  )}
                 {hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && !signup.user.member && (
-                   <button
+                  <button
                       type="button"
                       title={'Add member' + signup.user.name}
                       className="rw-button rw-button-small rw-button-black"
@@ -321,10 +321,10 @@ export const Success = ({ schedule, activeSignups, users}) => {
                     >
                       Set as member
                     </button>
-                   )}
+                  )}
                 {/* {hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && !signup.user.member && ( <><td>Add as Member</td></>)} */}
                 {hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && signup.user.member && (
-                   <button
+                  <button
                       type="button"
                       title={'Remove member' + signup.user.name}
                       className="rw-button rw-button-small rw-button-orange"
@@ -395,17 +395,17 @@ let queuePlayers = (<>
             </td>
             <td>
             {!hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && signup.user.member && (
-               <>
-               Member
-               </>
-               )}
-               {!hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && !signup.user.member && (
-               <>
-               Non Member
-               </>
-               )}
+              <>
+              Member
+              </>
+              )}
+              {!hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && !signup.user.member && (
+              <>
+              Non Member
+              </>
+              )}
             {hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && !signup.user.member && (
-               <button
+              <button
                   type="button"
                   title={'Set member' + signup.user.name}
                   className="rw-button rw-button-small rw-button-black"
@@ -414,10 +414,10 @@ let queuePlayers = (<>
                 >
                   Set as member
                 </button>
-               )}
+              )}
             {/* {hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && !signup.user.member && ( <><td>Add as Member</td></>)} */}
             {hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && signup.user.member && (
-               <button
+              <button
                   type="button"
                   title={'Remove member' + signup.user.name}
                   className="rw-button rw-button-small rw-button-orange"
@@ -481,7 +481,5 @@ let availablePlayers = userGoodList.length > 0 && (
 
                 </>)
     return page
-  } else {
-      return logInPage
-  }
+
 }

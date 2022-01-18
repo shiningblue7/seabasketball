@@ -19,7 +19,7 @@ import Standard from './components/Standard/Standard'
 const Routes = () => {
   return (
     <Router>
-    <Route path="/signup" page={SignupPage} name="signup" />
+    {/* <Route path="/signup" page={SignupPage} name="signup" /> */}
     {/* <Set wrap={SchedulesLayout}>
     <Route path="/schedules/new" page={ScheduleNewSchedulePage} name="newSchedule" />
     <Route path="/schedules/{id:Int}/edit" page={ScheduleEditSchedulePage} name="editSchedule" />
@@ -67,8 +67,8 @@ const Routes = () => {
             <Route path="/users/{id:Int}" page={UserUserPage} name="user" />
             <Route path="/users" page={UserUsersPage} name="users" />
         </Set>
-        <Route path="/" page={HomePage} name="home" unauthenticated='about' />
-
+        <Route path="/" page={HomePage} name="home" unauthenticated="{login}" />
+         <Route path="/about" page={AboutPage} name="about" />
         {/* <Route path="/schedules/new" page={ScheduleNewSchedulePage} name="newSchedule" />
         <Route path="/schedules/{id:Int}/edit" page={ScheduleEditSchedulePage} name="editSchedule" />
         <Route path="/schedules/{id:Int}" page={ScheduleSchedulePage} name="schedule" />
