@@ -50,6 +50,9 @@ export const createSchedule = async ({ input }) => {
   // get all members
   let members = await db.user.findMany({
     where: { member: true },
+    orderBy: {
+      roles: 'asc'
+    }
   })
 
   async function createThem (members) {

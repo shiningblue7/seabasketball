@@ -55,17 +55,20 @@ const Routes = () => {
       {/* </Set> */}
       {/* <Set wrap={BlogLayout}> */}
       <Set wrap={Standard}>
-      <Set wrap={SchedulesLayout}>
-    <Route path="/schedules/new" page={ScheduleNewSchedulePage} name="newSchedule" />
-    <Route path="/schedules/{id:Int}/edit" page={ScheduleEditSchedulePage} name="editSchedule" />
-    <Route path="/schedules/{id:Int}" page={ScheduleSchedulePage} name="schedule" />
-    <Route path="/schedules" page={ScheduleSchedulesPage} name="schedules" />
-    </Set>
+          <Set wrap={SchedulesLayout}>
+            <Route path="/schedules/new" page={ScheduleNewSchedulePage} name="newSchedule" />
+            <Route path="/schedules/{id:Int}/edit" page={ScheduleEditSchedulePage} name="editSchedule" />
+            <Route path="/schedules/{id:Int}" page={ScheduleSchedulePage} name="schedule" />
+            <Route path="/schedules" page={ScheduleSchedulesPage} name="schedules" />
+          </Set>
+          <Set wrap={UsersLayout}>
+            <Route path="/users/new" page={UserNewUserPage} name="newUser" />
+            <Route path="/users/{id:Int}/edit" page={UserEditUserPage} name="editUser" />
+            <Route path="/users/{id:Int}" page={UserUserPage} name="user" />
+            <Route path="/users" page={UserUsersPage} name="users" />
+        </Set>
         <Route path="/" page={HomePage} name="home" unauthenticated='about' />
-        <Route path="/users/new" page={UserNewUserPage} name="newUser" />
-        <Route path="/users/{id:Int}/edit" page={UserEditUserPage} name="editUser" />
-        <Route path="/users/{id:Int}" page={UserUserPage} name="user" />
-        <Route path="/users" page={UserUsersPage} name="users" />
+
         {/* <Route path="/schedules/new" page={ScheduleNewSchedulePage} name="newSchedule" />
         <Route path="/schedules/{id:Int}/edit" page={ScheduleEditSchedulePage} name="editSchedule" />
         <Route path="/schedules/{id:Int}" page={ScheduleSchedulePage} name="schedule" />
