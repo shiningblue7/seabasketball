@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
-const OrderWidget = ({activeSignups, marker, queueList}) => {
+const OrderWidget = ({activeSignups, marker, queueList, disable, setDisable}) => {
 
   const UPDATE_SIGNUP_MUTATION = gql`
   mutation swapSignupPositions($id1: Int!, $id2: Int!) {
@@ -25,7 +25,8 @@ const OrderWidget = ({activeSignups, marker, queueList}) => {
     }
   )
 
-  let moveUp = (signUpId) => {
+  let moveUp = async (signUpId) => {
+    setDisable(true)
     let localInput = {}
     let prevId = ''
     activeSignups.forEach(element => {
@@ -41,11 +42,12 @@ const OrderWidget = ({activeSignups, marker, queueList}) => {
       prevId = element.id
     });
 
-    updateSignUp(localInput)
-
+    await updateSignUp(localInput)
+    setDisable(false)
   }
 
-  let moveDown = (signUpId) => {
+  let moveDown = async (signUpId) => {
+    setDisable(true)
     let localInput = {}
     let prevId = ''
     let updateIt = ''
@@ -67,8 +69,8 @@ const OrderWidget = ({activeSignups, marker, queueList}) => {
       }
     });
 
-    updateSignUp(localInput)
-
+    await updateSignUp(localInput)
+    setDisable(false)
   }
 
   let orderButton = (
@@ -79,6 +81,7 @@ const OrderWidget = ({activeSignups, marker, queueList}) => {
       border="1"
       className="rw-button rw-button-small rw-button-green"
       onClick={moveUp}
+      disabled={disable}
     >
     Up
     </button>
@@ -90,6 +93,7 @@ const OrderWidget = ({activeSignups, marker, queueList}) => {
       border="1"
       onClick={moveDown}
       className="rw-button rw-button-small rw-button-purple"
+      disabled={disable}
     >
     Down
     </button>

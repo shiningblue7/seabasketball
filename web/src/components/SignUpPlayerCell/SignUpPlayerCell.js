@@ -5,6 +5,7 @@ import { Toaster } from '@redwoodjs/web/toast'
 import { ButtonField, FieldError, Label, SelectField } from "@redwoodjs/forms"
 import React, { useState } from 'react';
 import OrderWidget from '../OrderWidget/OrderWidget'
+import SchedulePage from 'src/pages/Schedule/SchedulePage/SchedulePage'
 
 export const QUERY = gql`
   query FindScheduleQuery {
@@ -42,6 +43,7 @@ export const Failure = ({ error }) => (
 )
 
 export const Success = ({ schedule, activeSignups, users}) => {
+  const [disable, setDisable] = React.useState(false);
   // const[activeSignups, setActiveSignups] = useState(activeSignupsData)
   // console.log('activeSignups',  activeSignups)
   // const [steps, setSteps] = useState(0);
@@ -144,31 +146,35 @@ export const Success = ({ schedule, activeSignups, users}) => {
     }
   )
 
-  const updateMemberClick = (userId, memberBoolean) => {
+  const updateMemberClick = async (userId, memberBoolean) => {
     // if (confirm('Are you sure you want to remove ' + name + '?')) {
       // deleteSignUp({ variables: { id } })
     // }
     // console.log('add user' , userId)
     // console.log('memberBoolean ' , memberBoolean)
+    setDisable(true);
     var input= {}
     const castInput = Object.assign(input, {
       member: memberBoolean,
       // userId: parseInt(userId),
     })
-    updateMember({ variables: {
+    await updateMember({ variables: {
                               id: parseInt(userId),
                               input: castInput }
                    }
                 )
+    setDisable(false)
   }
 
-  const onAddClick = (userId, scheduleId) => {
+  const onAddClick = async (userId, scheduleId) => {
+    setDisable(true);
     var input= {}
     const castInput = Object.assign(input, {
       scheduleId: parseInt(scheduleId),
       userId: parseInt(userId),
     })
-    createSignUp({ variables: { input: castInput } })
+    await createSignUp({ variables: { input: castInput } })
+    setDisable(false);
   }
 
 
@@ -192,12 +198,14 @@ export const Success = ({ schedule, activeSignups, users}) => {
     refetchQueries: [{ query: QUERY }],
     awaitRefetchQueries: true,
   })
-  const onDeleteClick = (id, name) => {
+  const onDeleteClick = async (id, name) => {
+    setDisable(true);
     if (hasRole('admin')) {
-      deleteSignUp({ variables: { id } })
+      await deleteSignUp({ variables: { id } })
     } else if (confirm('Are you sure you want to remove ' + name + '?')) {
-      deleteSignUp({ variables: { id } })
+      await deleteSignUp({ variables: { id } })
     }
+    setDisable(false);
   }
 
   const MAX_STRING_LENGTH = 20
@@ -267,6 +275,7 @@ export const Success = ({ schedule, activeSignups, users}) => {
                     && (
                       <button className="rw-button rw-button-small rw-button-blue"
                       onClick={() => onAddClick(signup.user.id, schedule.id)}
+                      disabled={disable}
                       >
                       Add Guest
                       </button>)
@@ -275,7 +284,7 @@ export const Success = ({ schedule, activeSignups, users}) => {
                 {/* <td>{steps}{setSteps(steps + 1)}</td> */}
                 <td>{++count}
                   {hasRole('admin') && (
-                    <OrderWidget schedule={schedule} marker={{QUERY, count, currentSignUpId: signup.id}} activeSignups={activeSignups} queueList={queueList}/>
+                    <OrderWidget schedule={schedule} marker={{QUERY, count, currentSignUpId: signup.id}} activeSignups={activeSignups} disable={disable} setDisable={setDisable} queueList={queueList}/>
                   ) }
                 </td>
                 <td>
@@ -285,6 +294,7 @@ export const Success = ({ schedule, activeSignups, users}) => {
                     title={'Remove signup' + signup.user.name}
                     className="rw-button rw-button-small rw-button-red"
                     onClick={() => onDeleteClick(signup.id, signup.user.name)}
+                    disabled={disable}
                   >
                     Remove
                   </button>
@@ -307,6 +317,7 @@ export const Success = ({ schedule, activeSignups, users}) => {
                       title={'Add member' + signup.user.name}
                       className="rw-button rw-button-small rw-button-black"
                       onClick={() => updateMemberClick(signup.user.id, true)}
+                      disabled={disable}
                     >
                       Set as member
                     </button>
@@ -318,6 +329,7 @@ export const Success = ({ schedule, activeSignups, users}) => {
                       title={'Remove member' + signup.user.name}
                       className="rw-button rw-button-small rw-button-orange"
                       onClick={() => updateMemberClick(signup.user.id, false)}
+                      disabled={disable}
                     >
                       Unset member
                     </button>
@@ -356,6 +368,7 @@ let queuePlayers = (<>
                 && (
                   <button className="rw-button rw-button-small rw-button-blue"
                   onClick={() => onAddClick(signup.user.id, schedule.id)}
+                  disabled={disable}
                   >
                   Add Guest
                   </button>)
@@ -374,6 +387,7 @@ let queuePlayers = (<>
                 title={'Remove signup' + signup.user.name}
                 className="rw-button rw-button-small rw-button-red"
                 onClick={() => onDeleteClick(signup.id, signup.user.name)}
+                disabled={disable}
               >
                 Remove
               </button>
@@ -396,6 +410,7 @@ let queuePlayers = (<>
                   title={'Set member' + signup.user.name}
                   className="rw-button rw-button-small rw-button-black"
                   onClick={() => updateMemberClick(signup.user.id, true)}
+                  disabled={disable}
                 >
                   Set as member
                 </button>
@@ -407,6 +422,7 @@ let queuePlayers = (<>
                   title={'Remove member' + signup.user.name}
                   className="rw-button rw-button-small rw-button-orange"
                   onClick={() => updateMemberClick(signup.user.id, false)}
+                  disabled={disable}
                 >
                   Unset member
                 </button>
@@ -441,6 +457,7 @@ let availablePlayers = userGoodList.length > 0 && (
                     title={'Add to signup' + user.name}
                     className="rw-button rw-button-small rw-button-green"
                     onClick={() => onAddClick(user.id, schedule.id)}
+                    disabled={disable}
                   >
                     Add
                   </button>
