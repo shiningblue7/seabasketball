@@ -21,24 +21,4 @@ const HomePage = () => {
   }
 }
 
-
-// const HomePage = () => {
-  // return (
-  //   <SignUpPlayer />
-  // )
-// }
-
-// const HomePage = () => {
-//     const { logIn } = useAuth()
-//     let logInPage =  (
-//           <>
-//             Please login to see schedule
-//             <br />
-//             <button onClick={logIn}>
-//             Log In
-//             </button>
-//           </>
-//         )
-//            return logInPage
-// }
 export default HomePage

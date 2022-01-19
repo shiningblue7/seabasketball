@@ -377,7 +377,7 @@ let queuePlayers = (<>
             {/* <td>{++count}</td> */}
             <td>{++count}
                   {hasRole('admin') && (
-                    <OrderWidget schedule={schedule} marker={{QUERY, count, currentSignUpId: signup.id, queue: true}} activeSignups={activeSignups} queueList={queueList}/>
+                    <OrderWidget schedule={schedule} marker={{QUERY, count, currentSignUpId: signup.id, queue: true}} activeSignups={activeSignups} queueList={queueList} disable={disable} setDisable={setDisable} />
                   ) }
             </td>
             <td>
