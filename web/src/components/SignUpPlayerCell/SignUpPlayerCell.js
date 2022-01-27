@@ -3,7 +3,7 @@ import { useAuth } from '@redwoodjs/auth'
 import { toast } from '@redwoodjs/web/toast'
 import { Toaster } from '@redwoodjs/web/toast'
 import { ButtonField, FieldError, Label, SelectField } from "@redwoodjs/forms"
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import OrderWidget from '../OrderWidget/OrderWidget'
 import SchedulePage from 'src/pages/Schedule/SchedulePage/SchedulePage'
 
@@ -30,6 +30,7 @@ export const QUERY = gql`
     users {
       id
       name
+      member
     }
   }
 `
@@ -102,7 +103,9 @@ export const Success = ({ schedule, activeSignups, users}) => {
     }
   }
   // console.log('signUpList', signUpList)
-
+  userGoodList.sort(function(a, b) {
+    return a.id - b.id;
+  });
   const UPDATE_USER_MUTATION = gql`
   mutation UpdateUserMutation($id: Int!, $input: UpdateUserInput!) {
     updateUser(id: $id, input: $input) {
@@ -248,12 +251,17 @@ export const Success = ({ schedule, activeSignups, users}) => {
     let signedUpPlayers = (<>
       <article>
         <h2>
-          {schedule.title} (Limit - <font color="red">{schedule.limit}</font>) - {new Date(schedule.date).toLocaleString()}
+          {schedule.title}  - {new Date(schedule.date).toLocaleString()}
         </h2>
+
+        <h4>
+                Limit : <font color="red">{schedule.limit}</font>
+        </h4>
       </article>
 
       <div>
-        <h2>Signed Up Players</h2>
+        <h4>Signed Up Players : <font color="green">{signUps.length}</font></h4>
+        { queueList.length > 0 && ( <h4>Queued Up Players : <font color="green">{queueList.length}</font></h4> )}
         <table>
           <thead>
             <tr>
@@ -346,7 +354,7 @@ export const Success = ({ schedule, activeSignups, users}) => {
 
 let queuePlayers = (<>
   <div>
-    <h2>Queued Up Players</h2>
+    <h2>Queued Up Players : <font color="blue">{queueList.length}</font></h2>
     <table className='rx-table'>
       <thead>
         <tr>
@@ -444,6 +452,7 @@ let availablePlayers = userGoodList.length > 0 && (
             <tr>
               <th>Name</th>
               <th>Add</th>
+              <th>Member</th>
               {/* <th>&nbsp;</th> */}
             </tr>
           </thead>
@@ -462,6 +471,40 @@ let availablePlayers = userGoodList.length > 0 && (
                     Add
                   </button>
                 </td>
+                <td>
+                  {!hasRole('admin') && user.member && (
+                  <>
+                  Member
+                  </>
+                  )}
+                  {!hasRole('admin') && !user.member && (
+                  <>
+                  Non Member
+                  </>
+                  )}
+                {hasRole('admin') && !user.member && (
+                  <button
+                      type="button"
+                      title={'Add member' + user.name}
+                      className="rw-button rw-button-small rw-button-black"
+                      onClick={() => updateMemberClick(user.id, true)}
+                      disabled={disable}
+                    >
+                      Set as member
+                    </button>
+                  )}
+                {hasRole('admin') && user.member && (
+                  <button
+                      type="button"
+                      title={'Remove member' + user.name}
+                      className="rw-button rw-button-small rw-button-orange"
+                      onClick={() => updateMemberClick(user.id, false)}
+                      disabled={disable}
+                    >
+                      Unset member
+                    </button>
+                  )}
+                  </td>
               </tr>
             ))}
           </tbody>
