@@ -44,18 +44,6 @@ export const Failure = ({ error }) => (
 )
 
 export const Success = ({ schedule, activeSignups, users}) => {
-  const { logIn,hasRole, isAuthenticated, userMetadata, currentUser } = useAuth()
-  if (!isAuthenticated) {
-    return (
-      <>
-        Please login to see schedule
-        <br />
-        <button onClick={logIn}>
-        Log In
-        </button>
-      </>
-    )
-  }
   const [disable, setDisable] = React.useState(false);
   // const[activeSignups, setActiveSignups] = useState(activeSignupsData)
   // console.log('activeSignups',  activeSignups)
@@ -73,7 +61,7 @@ export const Success = ({ schedule, activeSignups, users}) => {
   // console.log('signUps', signUps)
   const signUpList = []
   const queueList = []
-
+  const { logIn,hasRole, isAuthenticated, userMetadata, currentUser } = useAuth()
   var userGoodList = users
   var userGuest = ''
   var guestPresent = {}

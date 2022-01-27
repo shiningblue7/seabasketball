@@ -12,13 +12,13 @@ const HomePage = () => {
       </button>
     </>
   )
-  // if (!isAuthenticated) {
-  //   return logInPage
-  // } else {
+  if (!isAuthenticated) {
+    return logInPage
+  } else {
     return (
       <SignUpPlayer />
     )
-  // }
+  }
 }
 
 export default HomePage
