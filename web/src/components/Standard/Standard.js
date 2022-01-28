@@ -31,9 +31,23 @@ const Standard = ({ children }) => {
                &nbsp; - &nbsp;
                {isAuthenticated && userMetadata.email}
                &nbsp;&nbsp;&nbsp; */}
-              <button onClick={isAuthenticated ? logOut : logIn}>
+              {/* <button onClick={isAuthenticated ? logOut : logIn}>
                 {isAuthenticated ? 'Log Out' : 'Log In'}
-              </button>
+              </button> */}
+              <button
+              onClick={async () => {
+                if (isAuthenticated) {
+                  await logOut({ returnTo: process.env.AUTH0_REDIRECT_URI })
+                } else {
+                  const searchParams = new URLSearchParams(window.location.search)
+                  await logIn({
+                    appState: { targetUrl: searchParams.get('redirectTo') },
+                  })
+                }
+              }}
+            >
+              {isAuthenticated ? 'Log out' : 'Log in'}
+            </button>
 
             </li>
 
