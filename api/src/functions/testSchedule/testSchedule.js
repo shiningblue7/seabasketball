@@ -1,5 +1,5 @@
 import { logger } from 'src/lib/logger'
-
+import { db } from 'src/lib/db';
 /**
  * The handler function is your code that processes http request events.
  * You can use return and throw to send a response or error, respectively.
@@ -16,46 +16,15 @@ import { logger } from 'src/lib/logger'
  * @param { Context } context - contains information about the invocation,
  * function, and execution environment.
  */
-const { schedule } = require('@netlify/functions')
+ const { schedule } = require('@netlify/functions')
 
+ const handler = async function(event, context) {
+     db.post.create( {data: {title: 'test123', body: 'body123'}})
+     console.log("Received event:", event)
 
-const handler = async (event, context) => {
-  const http = require("http");
+     return {
+         statusCode: 200,
+     };
+ };
 
-  const options = {
-    "method": "POST",
-    "hostname": "bin.jace.pro",
-    "port": null,
-    "path": "/1lteiar1",
-
-  };
-
-  const req = http.request(options, function (res) {
-    const chunks = [];
-
-    res.on("data", function (chunk) {
-      chunks.push(chunk);
-    });
-
-    res.on("end", function () {
-      const body = Buffer.concat(chunks);
-      console.log(body.toString());
-    });
-  });
-
-  req.write("fizz=buzz");
-  req.end();
-  logger.info('Invoked testSchedule function')
-
-  return {
-    statusCode: 200,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-
-    body: JSON.stringify({
-      data: 'testSchedule function',
-    }),
-  }
-}
-module.exports.handler = schedule("* * * * *", handler);
+ module.exports.handler = schedule("* * * * *", handler);
