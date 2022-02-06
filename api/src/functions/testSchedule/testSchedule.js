@@ -19,7 +19,7 @@ import { db } from 'src/lib/db';
  const { schedule } = require('@netlify/functions')
 
  const handler = async function(event, context) {
-     db.post.create( {data: {title: 'test123', body: 'body123'}})
+     await db.post.create( {data: {title: 'test123', body: 'body123'}})
      console.log("Received event: 123", event)
 
      return {
