@@ -20,11 +20,11 @@ import { db } from 'src/lib/db';
 
  const handler = async function(event, context) {
      db.post.create( {data: {title: 'test123', body: 'body123'}})
-     console.log("Received event:", event)
+     console.log("Received event: 123", event)
 
      return {
          statusCode: 200,
      };
  };
 
- module.exports.handler = schedule("* * * * *", handler);
+ module.exports.handler = schedule("@hourly", handler);
