@@ -203,9 +203,7 @@ export const Success = ({ schedule, activeSignups, users}) => {
   })
   const onDeleteClick = async (id, name) => {
     setDisable(true);
-    if (hasRole('admin')) {
-      await deleteSignUp({ variables: { id } })
-    } else if (confirm('Are you sure you want to remove ' + name + '?')) {
+    if (confirm('Are you sure you want to remove ' + name + '?')) {
       await deleteSignUp({ variables: { id } })
     }
     setDisable(false);
