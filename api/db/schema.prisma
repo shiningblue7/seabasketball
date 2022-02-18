@@ -45,3 +45,12 @@ model User {
   roles     String?
   member    Boolean?
 }
+
+model AutoCreate {
+  id           Int      @id @default(autoincrement())
+  enabled      Boolean?
+  scheduledAt  DateTime @unique
+  autoCreateAt DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

@@ -37,6 +37,15 @@ li a:hover:not(.active) {
   background-color: #04AA6D;
 }
 
+.nav ul {
+  list-style-type: none;
+  display: flex;
+  justify-content: flex-end;
+}
+
 .float-right {
   float: right;
+  display: flex;
+  justify-content: flex-end;
 }
+

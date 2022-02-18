@@ -18,14 +18,18 @@ const Standard = ({ children }) => {
             { hasRole(['admin']) && (
               <Fragment>
             <li>
-              <Link to={routes.users()}>Users</Link>
+              <Link to={routes.users()}>User</Link>
             </li>
             <li>
-              <Link to={routes.schedules()}>Schedules</Link>
+              <Link to={routes.schedules()}>Sched</Link>
+            </li>
+            <li>
+              <Link to={routes.editAutoCreate({ id: 1 })}>Auto</Link>
             </li>
             </Fragment>
             )}
-            <li className='float-right'>
+
+            <li>
               {/* <font color="white">{isAuthenticated && userMetadata.name}</font> */}
                {/* {isAuthenticated && userMetadata.name}
                &nbsp; - &nbsp;
@@ -52,7 +56,6 @@ const Standard = ({ children }) => {
             </li>
 
 
-            {/* {isAuthenticated && <li>{userMetadata.name} [{userMetadata.email}]</li>} */}
           </ul>
         </nav>
         <h1>
