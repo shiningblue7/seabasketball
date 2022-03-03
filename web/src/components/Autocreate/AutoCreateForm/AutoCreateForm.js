@@ -82,14 +82,12 @@ const AutoCreateForm = (props) => {
     setNextCreate(getNextWeek(new Date(),  new Date(props.autoCreate?.autoCreateAt).getDay(), evt.target.value))
   }
   const [dayOf, setDayOf] = useState(new Date(props.autoCreate?.scheduledAt).getDay())
-  // console.log('initial scheduledAt' ,new Date(props.autoCreate?.scheduledAt))
-  // console.log('initial dayOf', dayOf)
   let handleDayOf= (evt) => {
     setDayOf(evt.target.value)
     setNextCreate(getNextWeek(new Date(),  parseInt(evt.target.value), formatTime(props.autoCreate?.scheduledAt)))
   }
-  const [nextCreate, setNextCreate] = useState(getNextWeek(new Date(), new Date(props.autoCreate?.autoCreateAt).getDay(), formatTime(props.autoCreate?.scheduledAt)))
-  console.log('nextCrete', nextCreate)
+  const [nextCreate, setNextCreate] = useState(getNextWeek(new Date(), new Date(props.autoCreate?.scheduledAt).getDay(), formatTime(props.autoCreate?.scheduledAt)))
+
   let dayOfObj = [
     {id: 0, dayText: "Sunday"},
     {id: 1, dayText: "Monday"},
@@ -103,8 +101,6 @@ const AutoCreateForm = (props) => {
   let dayOfSelect = dayOfObj.map((day)=> {
     return <option value={day.id} key={day.id}>{day.dayText}</option>
   })
-  // console.log('good date', formatDatetime(props.autoCreate?.autoCreateAt))
-  // console.log('next week' , getNextWeek(new Date(), new Date(props.autoCreate?.autoCreateAt).getDay()))
   return (
     <div className="rw-form-wrapper">
       <Form onSubmit={onSubmit} error={props.error}>
@@ -161,7 +157,7 @@ const AutoCreateForm = (props) => {
           className="rw-label"
           errorClassName="rw-label rw-label-error"
         >
-          Next Schedule will be created on
+          Next Schedule date will be on
         </Label>
         <DatetimeLocalField
           name="autoCreateAt"
@@ -169,6 +165,8 @@ const AutoCreateForm = (props) => {
           className="rw-input"
           errorClassName="rw-input rw-input-error"
           disabled={true}></DatetimeLocalField>
+
+        <br/><Label>Automation will create this schedule this Sunday at <font color="red">{getThisSunday()}</font></Label>
 
         <FieldError name="autoCreateAt" className="rw-field-error" />
 
@@ -219,6 +217,42 @@ function getNextWeek(date, dayOfWeek, hoursMin) {
   let convert = nextWeek.toISOString()
 
   return formatDatetime(convert);
+}
+
+function getThisSunday() {
+	//first add + 7
+	let today = new Date()
+	let dayOfWeek = today.getDay()
+	//Today is Friday  ==> 5
+	//then just + 2 which will be to become sunday
+
+	//Today tuesday  ==> 2
+	//the just +2  ==> 7
+  // x + y = 7
+  // y = 7 -x
+	//get the difference
+	let diff = 7 - dayOfWeek
+	// console.log('diff', diff)
+
+	//subtract the Day of week  from next week
+	today.setDate(today.getDate() + diff )
+   // console.log(' new hours ', hours)
+  // console.log(' new minutes ', mins)
+  // nextWeek.setUTCHours(parseInt(scheduledSource.getHours()),parseInt(scheduledSource.getMinutes()),0)
+  today.setUTCHours(0,15,0)
+  // nextWeek.setMinutes('0')
+	// console.log('nextWeek', nextWeek)
+    //let convert = nextWeek.getUTCMonth() + 1 + '/' + nextWeek.getUTCDate() + '/' + nextWeek.getUTCFullYear() + ' ' + nextWeek.getHours() + ':' + nextWeek.getMinutes() + ' ' + ampm
+  // console.log('convert ', convert)
+  // let convert = today.toISOString()
+    let hours = today.getUTCHours();
+    var ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    let min = today.getMinutes();
+    min = min < 10 ? '0'+min : min;
+    let convert = today.getUTCMonth() + 1 + '/' + today.getUTCDate() + '/' + today.getUTCFullYear() + ' ' + hours + ':' + min + ' ' + ampm
+  return convert;
 }
 
 export default AutoCreateForm

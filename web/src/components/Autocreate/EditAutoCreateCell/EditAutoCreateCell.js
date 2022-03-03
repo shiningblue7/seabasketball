@@ -40,8 +40,8 @@ export const Success = ({ autoCreate }) => {
     UPDATE_AUTO_CREATE_MUTATION,
     {
       onCompleted: () => {
-        toast.success('AutoCreate updated')
-        navigate(routes.autoCreates())
+        toast.success('Auto Create Schedule updated')
+        navigate(routes.home())
       },
       onError: (error) => {
         toast.error(error.message)
@@ -57,7 +57,7 @@ export const Success = ({ autoCreate }) => {
     <div className="rw-segment">
       <header className="rw-segment-header">
         <h2 className="rw-heading rw-heading-secondary">
-          Edit AutoCreate {autoCreate.id}
+          Auto schedule creation
         </h2>
       </header>
       <div className="rw-segment-main">
