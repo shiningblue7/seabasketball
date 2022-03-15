@@ -6,3 +6,23 @@
 .rx-table tbody tr:nth-child(even) {
   background-color: hsl(205, 27%, 62%);
 }
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+
+
+.item1 {
+  grid-column-start: 1;
+  grid-column-end: 5;
+}
+
+.flex-container {
+  display: flex;
+}
+
+@media screen and (min-width: 1024px) {
+  Table {size:"sm";}
+
+}

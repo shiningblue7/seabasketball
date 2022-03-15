@@ -1,6 +1,7 @@
+import { ChakraProvider, ColorModeScript } from '@chakra-ui/react'
 import { AuthProvider } from '@redwoodjs/auth'
 import { Auth0Client } from '@auth0/auth0-spa-js'
-
+import { theme } from './chakraUiTheme'
 import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 
@@ -37,9 +38,12 @@ const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
     <RedwoodProvider titleTemplate="%AppTitle">
       <AuthProvider client={auth0} type="auth0">
-        <RedwoodApolloProvider>
-          <Routes />
-        </RedwoodApolloProvider>
+        <ColorModeScript />
+        <ChakraProvider theme={theme}>
+          <RedwoodApolloProvider>
+            <Routes />
+          </RedwoodApolloProvider>
+        </ChakraProvider>
       </AuthProvider>
     </RedwoodProvider>
   </FatalErrorBoundary>
