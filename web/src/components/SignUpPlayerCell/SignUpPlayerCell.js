@@ -6,6 +6,23 @@ import { ButtonField, FieldError, Label, SelectField } from "@redwoodjs/forms"
 import React, { useRef, useState } from 'react';
 import OrderWidget from '../OrderWidget/OrderWidget'
 import SchedulePage from 'src/pages/Schedule/SchedulePage/SchedulePage'
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  IconButton,
+  Flex,
+  Spacer,
+  Box
+} from '@chakra-ui/react'
+import { HiOutlineStar, HiUserRemove, HiUserAdd } from "react-icons/hi";
+import { FiUserPlus, FiUserX } from "react-icons/fi";
+import { HiBadgeCheck } from "react-icons/hi";
 
 export const QUERY = gql`
   query FindScheduleQuery {
@@ -246,6 +263,7 @@ export const Success = ({ schedule, activeSignups, users}) => {
     // const [steps, setSteps] = useState(0);
 
     let count = 1
+    let buttonSize = "lg"
     let signedUpPlayers = (<>
       <article>
         <h2>
@@ -260,91 +278,92 @@ export const Success = ({ schedule, activeSignups, users}) => {
       <div>
         <h4>Signed Up Players : <font color="green">{signUps.length}</font></h4>
         { queueList.length > 0 && ( <h4>Queued Up Players : <font color="green">{queueList.length}</font></h4> )}
-        <table>
-          <thead>
-            <tr>
-              <th>Signed Up</th>
-              <th>Order</th>
-              <th>Remove</th>
-              {/* {hasRole('admin') && ( <><th>Member</th></>)} */}
-              <th>Member</th>
-            </tr>
-          </thead>
-          <tbody>
+        <Table
+                width={{md: '40%'}}>
+        <Thead>
+            <Tr>
+              <Th>Signed Up</Th>
+              <Th>Menu</Th>
+              {/* <Th>Order</Th> */}
+              {/* <Th>Remove</Th> */}
+              {/* {hasRole('admin') && ( <><Th>Member</Th></>)} */}
+              {/* <Th>Member</Th> */}
+            </Tr>
+        </Thead>
+          <Tbody>
             {signUpList.map((signup, count) => (
-              <tr key={signup.id}>
-                <td>{truncate(signup.user.name)}
+              <Tr key={signup.id}>
+                <Td>
+                    <Flex>
+                    {count++}) {truncate(signup.user.name)}
                     { countPresent[parseInt(signup.user.id)] >= 1 && ( <> +{ countPresent[parseInt(signup.user.id)] } Guest </>   )}
                     <p hidden> { countPresent[parseInt(signup.user.id)]++ }</p>
+                    <Spacer/>
+
+
+
+                    </Flex>
+                </Td>
+                <Td>
+                    <Flex gap={1}>
+                    <Spacer/>
+
+
                     {(( currentUser.id === signup.user.id || hasRole('admin') ) && guestPresent[parseInt(signup.user.id)] < 2 && ++guestPresent[signup.user.id] )
 
                     && (
-                      <button className="rw-button rw-button-small rw-button-blue"
-                      onClick={() => onAddClick(signup.user.id, schedule.id)}
-                      disabled={disable}
-                      >
-                      Add Guest
-                      </button>)
+                      <IconButton size={buttonSize} aria-label='Add Guest' colorScheme={'blue'} icon={<FiUserPlus/> } onClick={() => onAddClick(signup.user.id, schedule.id)}
+                      disabled={disable}/>
+                      )
                     }
-                </td>
-                {/* <td>{steps}{setSteps(steps + 1)}</td> */}
-                <td>{++count}
+
+
+                    { ((currentUser.id === signup.user.id) || hasRole('admin') ) && (
+                      <Flex gap={1} flexDirection={"column"}>
+                      <IconButton size={buttonSize} aria-label='Remove Guest' colorScheme={'red'} icon={<FiUserX/> } onClick={() => onDeleteClick(signup.id, signup.user.name)}
+                    disabled={disable}/>
+                    {hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && !signup.user.member && (
+
+                    <IconButton size={buttonSize} aria-label='Unset Member' colorScheme={'gray'} icon={<HiOutlineStar/> } onClick={() => updateMemberClick(signup.user.id, true)}
+                    disabled={disable}/>
+
+                    )
+                    }
+
+                    {hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && signup.user.member && (
+                    <>
+                    <IconButton size={buttonSize} aria-label='Unset Member' colorScheme={'orange'} icon={<HiOutlineStar/> } onClick={() => updateMemberClick(signup.user.id, false)}
+                    disabled={disable}/>
+                    </>
+                    )
+                    }
+                      </Flex>
+                  ) }
+
+                    {hasRole('admin') && (
+                    <OrderWidget size={buttonSize} schedule={schedule} marker={{QUERY, count, currentSignUpId: signup.id}} activeSignups={activeSignups} disable={disable} setDisable={setDisable} queueList={queueList}/>
+                  ) }
+
+
+
+
+
+                    {/* </Flex> */}
+                    </Flex>
+                </Td>
+                {/* <Td>{steps}{setSteps(steps + 1)}</Td> */}
+                {/* <Td>{++count}
                   {hasRole('admin') && (
                     <OrderWidget schedule={schedule} marker={{QUERY, count, currentSignUpId: signup.id}} activeSignups={activeSignups} disable={disable} setDisable={setDisable} queueList={queueList}/>
                   ) }
-                </td>
-                <td>
-                  { ((currentUser.id === signup.user.id) || hasRole('admin') ) && (
-                  <button
-                    type="button"
-                    title={'Remove signup' + signup.user.name}
-                    className="rw-button rw-button-small rw-button-red"
-                    onClick={() => onDeleteClick(signup.id, signup.user.name)}
-                    disabled={disable}
-                  >
-                    Remove
-                  </button>
-                  ) }
-                </td>
-                <td>
-                {!hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && signup.user.member && (
-                  <>
-                  Member
-                  </>
-                  )}
-                  {!hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && !signup.user.member && (
-                  <>
-                  Non Member
-                  </>
-                  )}
-                {hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && !signup.user.member && (
-                  <button
-                      type="button"
-                      title={'Add member' + signup.user.name}
-                      className="rw-button rw-button-small rw-button-black"
-                      onClick={() => updateMemberClick(signup.user.id, true)}
-                      disabled={disable}
-                    >
-                      Set as member
-                    </button>
-                  )}
-                {/* {hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && !signup.user.member && ( <><td>Add as Member</td></>)} */}
-                {hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && signup.user.member && (
-                  <button
-                      type="button"
-                      title={'Remove member' + signup.user.name}
-                      className="rw-button rw-button-small rw-button-orange"
-                      onClick={() => updateMemberClick(signup.user.id, false)}
-                      disabled={disable}
-                    >
-                      Unset member
-                    </button>
-                  )}
-                  </td>
-              </tr>
+                </Td> */}
+
+
+              </Tr>
             ))}
-          </tbody>
-        </table>
+          </Tbody>
+        </Table>
+
       </div>
 
       </>
@@ -353,20 +372,20 @@ export const Success = ({ schedule, activeSignups, users}) => {
 let queuePlayers = (<>
   <div>
     <h2>Queued Up Players : <font color="blue">{queueList.length}</font></h2>
-    <table className='rx-table'>
-      <thead>
-        <tr>
-          <th>Signed Up</th>
-          <th>Order</th>
-          <th>Remove</th>
-          {/* {hasRole('admin') && ( <><th>Member</th></>)} */}
-          <th>Member</th>
-        </tr>
-      </thead>
-      <tbody>
+    <Table width={{md: '40%'}}>
+      <Thead>
+        <Tr>
+          <Th>Signed Up</Th>
+          <Th>Order</Th>
+          <Th>Remove</Th>
+          {/* {hasRole('admin') && ( <><Th>Member</Th></>)} */}
+          <Th>Member</Th>
+        </Tr>
+      </Thead>
+      <Tbody>
         {queueList.map((signup, count) => (
-          <tr key={signup.id}>
-            <td>{truncate(signup.user.name)}
+          <Tr key={signup.id}>
+            <Td>{truncate(signup.user.name)}
                 { countPresent[parseInt(signup.user.id)] >= 1 && ( <> +{ countPresent[parseInt(signup.user.id)] } Guest </>   )}
                 <p hidden> { countPresent[parseInt(signup.user.id)]++ }</p>
                 {(( currentUser.id === signup.user.id || hasRole('admin') ) && guestPresent[parseInt(signup.user.id)] < 2 && ++guestPresent[signup.user.id] )
@@ -379,14 +398,14 @@ let queuePlayers = (<>
                   Add Guest
                   </button>)
                 }
-            </td>
-            {/* <td>{++count}</td> */}
-            <td>{++count}
+            </Td>
+            {/* <Td>{++count}</Td> */}
+            <Td>{++count}
                   {hasRole('admin') && (
                     <OrderWidget schedule={schedule} marker={{QUERY, count, currentSignUpId: signup.id, queue: true}} activeSignups={activeSignups} queueList={queueList} disable={disable} setDisable={setDisable} />
                   ) }
-            </td>
-            <td>
+            </Td>
+            <Td>
               { ((currentUser.id === signup.user.id) || hasRole('admin') ) && (
               <button
                 type="button"
@@ -398,8 +417,8 @@ let queuePlayers = (<>
                 Remove
               </button>
               ) }
-            </td>
-            <td>
+            </Td>
+            <Td>
             {!hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && signup.user.member && (
               <>
               Member
@@ -421,7 +440,7 @@ let queuePlayers = (<>
                   Set as member
                 </button>
               )}
-            {/* {hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && !signup.user.member && ( <><td>Add as Member</td></>)} */}
+            {/* {hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && !signup.user.member && ( <><Td>Add as Member</Td></>)} */}
             {hasRole('admin') && countPresent[parseInt(signup.user.id)] == 1 && signup.user.member && (
               <button
                   type="button"
@@ -433,11 +452,11 @@ let queuePlayers = (<>
                   Unset member
                 </button>
               )}
-              </td>
-          </tr>
+              </Td>
+          </Tr>
         ))}
-      </tbody>
-    </table>
+      </Tbody>
+    </Table>
   </div>
   </>
 )
@@ -445,20 +464,20 @@ let queuePlayers = (<>
 let availablePlayers = userGoodList.length > 0 && (
   <><div>
     <h2>Available Players</h2>
-        <table border="1">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Add</th>
-              <th>Member</th>
-              {/* <th>&nbsp;</th> */}
-            </tr>
-          </thead>
-          <tbody>
+        <Table width={{md: '40%'}}>
+          <Thead>
+            <Tr>
+              <Th>Name</Th>
+              <Th>Add</Th>
+              <Th>Member</Th>
+              {/* <Th>&nbsp;</Th> */}
+            </Tr>
+          </Thead>
+          <Tbody>
             {userGoodList.map((user) => (
-              <tr key={user.id}>
-                <td>{user.name} {userGuest}</td>
-                <td>
+              <Tr key={user.id}>
+                <Td>{user.name} {userGuest}</Td>
+                <Td>
                   <button
                     type="button"
                     title={'Add to signup' + user.name}
@@ -468,8 +487,8 @@ let availablePlayers = userGoodList.length > 0 && (
                   >
                     Add
                   </button>
-                </td>
-                <td>
+                </Td>
+                <Td>
                   {!hasRole('admin') && user.member && (
                   <>
                   Member
@@ -502,11 +521,11 @@ let availablePlayers = userGoodList.length > 0 && (
                       Unset member
                     </button>
                   )}
-                  </td>
-              </tr>
+                  </Td>
+              </Tr>
             ))}
-          </tbody>
-        </table>
+          </Tbody>
+        </Table>
         </div>
     </>
   )

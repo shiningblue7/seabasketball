@@ -14,17 +14,22 @@
   },
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.19.3",
-    "@redwoodjs/auth": "0.41.0",
-    "@redwoodjs/forms": "^0.41.0",
-    "@redwoodjs/router": "^0.41.0",
-    "@redwoodjs/web": "^0.41.0",
+    "@redwoodjs/auth": "^0.47.1",
+    "@redwoodjs/forms": "^0.47.1",
+    "@redwoodjs/router": "^0.47.1",
+    "@redwoodjs/web": "^0.47.1",
     "cirrus-ui": "^0.6.3",
     "prop-types": "15.7.2",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-icons": "^4.3.1"
   },
   "devDependencies": {
+    "@chakra-ui/react": "^1.8.6",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
     "autoprefixer": "^10.4.0",
+    "framer-motion": "^4",
     "postcss": "^8.4.5",
     "postcss-loader": "^6.2.1",
     "tailwindcss": "^3.0.7"

@@ -1,8 +1,23 @@
 import React, { useState, useContext } from 'react';
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
+import { FiArrowUpCircle, FiArrowDownCircle } from "react-icons/fi";
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  IconButton,
+  Flex,
+  Spacer,
+  Box
+} from '@chakra-ui/react'
 
-const OrderWidget = ({activeSignups, marker, queueList, disable, setDisable}) => {
+const OrderWidget = ({size, activeSignups, marker, queueList, disable, setDisable}) => {
 
   const UPDATE_SIGNUP_MUTATION = gql`
   mutation swapSignupPositions($id1: Int!, $id2: Int!) {
@@ -75,30 +90,39 @@ const OrderWidget = ({activeSignups, marker, queueList, disable, setDisable}) =>
 
   let orderButton = (
   <>
+  <Flex gap={1} flexDirection={"column"}>
+  {( marker.queue || marker.count == 1 ) && (
+
+
+<IconButton size={size} aria-label='Up' colorScheme={'green'} icon={<FiArrowUpCircle/> } onClick={moveUp}
+                disabled='true'/>
+
+  )}
   {( marker.queue || marker.count > 1 ) && (
-    <>
-    <button
-      border="1"
-      className="rw-button rw-button-small rw-button-green"
-      onClick={moveUp}
-      disabled={disable}
-    >
-    Up
-    </button>
-    &nbsp;&nbsp;&nbsp;</>
+
+
+    <IconButton size={size} aria-label='Up' colorScheme={'green'} icon={<FiArrowUpCircle/> } onClick={moveUp}
+                    disabled={disable}/>
+
   )}
 
+
     {( (marker.queue && marker.count < queueList.length ) || (!marker.queue && marker.count < activeSignups.length) ) && (
-    <button
-      border="1"
-      onClick={moveDown}
-      className="rw-button rw-button-small rw-button-purple"
-      disabled={disable}
-    >
-    Down
-    </button>
+
+    <IconButton size={size} aria-label='Down' colorScheme={'messenger'} icon={<FiArrowDownCircle/> } onClick={moveDown}
+                    disabled={disable}/>
+
+
     )}
 
+    {( (marker.queue && marker.count < queueList.length ) || (!marker.queue && marker.count == activeSignups.length) ) && (
+
+<IconButton size={size} aria-label='Down' colorScheme={'messenger'} icon={<FiArrowDownCircle/> } onClick={moveDown}
+                disabled='true'/>
+
+
+    )}
+    </Flex>
     </>
 
   )
