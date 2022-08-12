@@ -8,7 +8,7 @@
     ]
   },
   "devDependencies": {
-    "@redwoodjs/core": "^0.41.0",
+    "@redwoodjs/core": "^2.2.0",
     "auth0": "^2.37.0"
   },
   "eslintConfig": {
