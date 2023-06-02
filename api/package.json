@@ -4,7 +4,8 @@
   "private": true,
   "dependencies": {
     "@netlify/functions": "^0.11.0",
-    "@redwoodjs/api": "^2.2.0",
-    "@redwoodjs/graphql-server": "^2.2.0"
+    "@redwoodjs/api": "4.5.0",
+    "@redwoodjs/auth-auth0-api": "4.5.0",
+    "@redwoodjs/graphql-server": "4.5.0"
   }
 }

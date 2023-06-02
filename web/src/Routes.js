@@ -15,10 +15,12 @@ import PostsLayout from 'src/layouts/PostsLayout'
 import BlogLayout from './layouts/BlogLayout/BlogLayout'
 import Standard from './components/Standard/Standard'
 
+import { useAuth } from 'src/auth'
+
 
 const Routes = () => {
   return (
-    <Router>
+    <Router useAuth={useAuth}>
       <Set wrap={Standard}>
           <Private role={['admin']} unauthenticated="home" redirectTo="home">
           <Set wrap={SchedulesLayout}>

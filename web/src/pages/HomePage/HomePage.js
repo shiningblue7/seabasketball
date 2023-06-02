@@ -1,6 +1,6 @@
 import SignUpPlayer from 'src/components/SignUpPlayerCell'
 import { Button, ButtonField, FieldError, Label, SelectField } from "@redwoodjs/forms"
-import { useAuth } from '@redwoodjs/auth'
+import { useAuth } from 'src/auth'
 const HomePage = () => {
   const { loading, logIn,logOut, isAuthenticated } = useAuth()
   let logInPage =  (

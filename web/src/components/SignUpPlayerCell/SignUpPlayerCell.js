@@ -1,5 +1,5 @@
 import { useMutation } from '@redwoodjs/web'
-import { useAuth } from '@redwoodjs/auth'
+import { useAuth } from 'src/auth'
 import { toast } from '@redwoodjs/web/toast'
 import { Toaster } from '@redwoodjs/web/toast'
 import { ButtonField, FieldError, Label, SelectField } from "@redwoodjs/forms"
