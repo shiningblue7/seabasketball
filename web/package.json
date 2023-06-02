@@ -1,7 +1,6 @@
 {
   "name": "web",
   "version": "0.0.0",
-  "private": false,
   "browserslist": {
     "development": [
       "last 1 version"
@@ -13,11 +12,12 @@
     ]
   },
   "dependencies": {
-    "@auth0/auth0-spa-js": "^1.19.3",
-    "@redwoodjs/auth": "^2.2.0",
-    "@redwoodjs/forms": "^2.2.0",
-    "@redwoodjs/router": "^2.2.0",
-    "@redwoodjs/web": "^2.2.0",
+    "@auth0/auth0-spa-js": "^1",
+    "@redwoodjs/auth": "4.5.0",
+    "@redwoodjs/auth-auth0-web": "4.5.0",
+    "@redwoodjs/forms": "4.5.0",
+    "@redwoodjs/router": "4.5.0",
+    "@redwoodjs/web": "4.5.0",
     "cirrus-ui": "^0.6.3",
     "prop-types": "15.7.2",
     "react": "17.0.2",

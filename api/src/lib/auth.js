@@ -1,13 +1,5 @@
-import { parseJWT } from '@redwoodjs/api'
 import { AuthenticationError, ForbiddenError } from '@redwoodjs/graphql-server'
 import { db } from 'src/lib/db'
-import { AuthenticationClient } from 'auth0'
-
-
-const auth0 = new AuthenticationClient({
-  domain: process.env.AUTH0_DOMAIN,
-  clientId: process.env.AUTH0_CLIENT_ID,
-})
 
 /**
  * Represents the user attributes returned by the decoding the
@@ -19,11 +11,6 @@ const auth0 = new AuthenticationClient({
  * an optional collection of roles used by requireAuth() to check
  * if the user is authenticated or has role-based access
  *
- * @param decoded - The decoded access token containing user info and JWT claims like `sub`. Note could be null.
- * @param { token, SupportedAuthTypes type } - The access token itself as well as the auth provider type
- * @param { APIGatewayEvent event, Context context } - An object which contains information from the invoker
- * such as headers and cookies, and the context information about the invocation such as IP Address
- *
  * !! BEWARE !! Anything returned from this function will be available to the
  * client--it becomes the content of `currentUser` on the web side (as well as
  * `context.currentUser` on the api side). You should carefully add additional
@@ -32,19 +19,22 @@ const auth0 = new AuthenticationClient({
  *
  * @see https://github.com/redwoodjs/redwood/tree/main/packages/auth for examples
  *
+ * @param decoded - The decoded access token containing user info and JWT
+ *   claims like `sub`. Note, this could be null.
+ * @param { token, SupportedAuthTypes type } - The access token itself as well
+ *   as the auth provider type
+ * @param { APIGatewayEvent event, Context context } - An optional object which
+ *   contains information from the invoker such as headers and cookies, and the
+ *   context information about the invocation such as IP Address
  * @returns RedwoodUser
  */
-export const getCurrentUser = async (
-  decoded,
+export const getCurrentUser = async (decoded,
   { token, type },
-  { event, context }
-) => {
+  { event, context }) => {
+
   if (!decoded.sub || !decoded ) {
     return null
   }
-  // console.log('context' , context);
-  // console.log('userDecoded' , decoded);
-  // console.log('userToken' , token);
 
   let user = await db.user.findFirst({
     where: { subject: decoded.sub
@@ -106,7 +96,13 @@ export const getCurrentUser = async (
   // console.log('retUser', retUser)
   return retUser
 
+  // const roles = decoded[process.env.AUTH0_AUDIENCE + '/roles']
 
+  // if (roles) {
+  //   return { ...decoded, roles }
+  // }
+
+  // return { ...decoded }
 }
 
 /**
@@ -126,30 +122,42 @@ export const isAuthenticated = () => {
 /**
  * Checks if the currentUser is authenticated (and assigned one of the given roles)
  *
- * @param roles: AllowedRoles - Checks if the currentUser is assigned one of these roles
+ * @param roles: {@link AllowedRoles} - Checks if the currentUser is assigned one of these roles
  *
  * @returns {boolean} - Returns true if the currentUser is logged in and assigned one of the given roles,
  * or when no roles are provided to check against. Otherwise returns false.
  */
-export const hasRole = ({ roles }) => {
+export const hasRole = (roles) => {
   if (!isAuthenticated()) {
     return false
   }
 
-  if (roles) {
-    if (Array.isArray(roles)) {
-      return context.currentUser.roles?.some((r) => roles.includes(r))
-    }
+  const currentUserRoles = context.currentUser?.roles
 
-    if (typeof roles === 'string') {
-      return context.currentUser.roles?.includes(roles)
+  if (typeof roles === 'string') {
+    if (typeof currentUserRoles === 'string') {
+      // roles to check is a string, currentUser.roles is a string
+      return currentUserRoles === roles
+    } else if (Array.isArray(currentUserRoles)) {
+      // roles to check is a string, currentUser.roles is an array
+      return currentUserRoles?.some((allowedRole) => roles === allowedRole)
     }
-
-    // roles not found
-    return false
   }
 
-  return true
+  if (Array.isArray(roles)) {
+    if (Array.isArray(currentUserRoles)) {
+      // roles to check is an array, currentUser.roles is an array
+      return currentUserRoles?.some((allowedRole) =>
+        roles.includes(allowedRole)
+      )
+    } else if (typeof currentUserRoles === 'string') {
+      // roles to check is an array, currentUser.roles is a string
+      return roles.some((allowedRole) => currentUserRoles === allowedRole)
+    }
+  }
+
+  // roles not found
+  return false
 }
 
 /**
@@ -157,21 +165,21 @@ export const hasRole = ({ roles }) => {
  * whether or not they are assigned a role, and optionally raise an
  * error if they're not.
  *
- * @param roles: AllowedRoles - When checking role membership, these roles grant access.
+ * @param roles?: {@link AllowedRoles} - When checking role membership, these roles grant access.
  *
  * @returns - If the currentUser is authenticated (and assigned one of the given roles)
  *
- * @throws {AuthenticationError} - If the currentUser is not authenticated
- * @throws {ForbiddenError} If the currentUser is not allowed due to role permissions
+ * @throws {@link AuthenticationError} - If the currentUser is not authenticated
+ * @throws {@link ForbiddenError} - If the currentUser is not allowed due to role permissions
  *
  * @see https://github.com/redwoodjs/redwood/tree/main/packages/auth for examples
  */
-export const requireAuth = ({ roles }) => {
+export const requireAuth = ({ roles } = {}) => {
   if (!isAuthenticated()) {
     throw new AuthenticationError("You don't have permission to do that.")
   }
 
-  if (!hasRole({ roles })) {
+  if (roles && !hasRole(roles)) {
     throw new ForbiddenError("You don't have access to do that.")
   }
 }

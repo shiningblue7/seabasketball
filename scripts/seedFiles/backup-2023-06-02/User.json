@@ -1,0 +1,132 @@
+[
+  {
+    "id": 11,
+    "createdAt": "2022-01-05T02:21:59.826Z",
+    "updatedAt": "2022-01-05T02:21:59.827Z",
+    "subject": null,
+    "email": "jacebenson@gmail.com",
+    "name": "Jace Benson",
+    "roles": null,
+    "member": null
+  },
+  {
+    "id": 12,
+    "createdAt": "2022-01-05T02:21:59.826Z",
+    "updatedAt": "2022-01-05T02:21:59.827Z",
+    "subject": null,
+    "email": "lawardy@gmail.com",
+    "name": "Erwin Lawardy",
+    "roles": null,
+    "member": null
+  },
+  {
+    "id": 13,
+    "createdAt": "2022-01-05T02:21:59.826Z",
+    "updatedAt": "2022-01-05T02:21:59.827Z",
+    "subject": null,
+    "email": "lawyersinvestmentgroup@gmail.com",
+    "name": "Teddy Susanto",
+    "roles": null,
+    "member": null
+  },
+  {
+    "id": 14,
+    "createdAt": "2022-01-05T02:21:59.826Z",
+    "updatedAt": "2022-01-05T19:49:02.449Z",
+    "subject": "google-oauth2|105268662347820446719",
+    "email": "levikaryadi@gmail.com",
+    "name": "Levi Karyadi",
+    "roles": null,
+    "member": null
+  },
+  {
+    "id": 10,
+    "createdAt": "2022-01-05T02:21:59.826Z",
+    "updatedAt": "2022-01-18T06:59:44.427Z",
+    "subject": null,
+    "email": "ipramono@gmail.com",
+    "name": "Indra Pramono",
+    "roles": null,
+    "member": false
+  },
+  {
+    "id": 7,
+    "createdAt": "2022-01-05T02:21:59.826Z",
+    "updatedAt": "2022-01-18T17:46:28.085Z",
+    "subject": null,
+    "email": "kennyyjoshuaa@gmail.com",
+    "name": "Kenny Joshua",
+    "roles": null,
+    "member": true
+  },
+  {
+    "id": 8,
+    "createdAt": "2022-01-05T02:21:59.826Z",
+    "updatedAt": "2022-01-27T07:49:01.282Z",
+    "subject": null,
+    "email": "pandu_aji@yahoo.com",
+    "name": "pandu_aji@yahoo.com",
+    "roles": null,
+    "member": false
+  },
+  {
+    "id": 6,
+    "createdAt": "2022-01-05T02:21:59.826Z",
+    "updatedAt": "2022-01-27T07:49:05.228Z",
+    "subject": null,
+    "email": "ashkan1@gmail.com",
+    "name": "Ashkan Hojjati",
+    "roles": null,
+    "member": false
+  },
+  {
+    "id": 9,
+    "createdAt": "2022-01-05T02:21:59.826Z",
+    "updatedAt": "2022-01-27T08:02:53.723Z",
+    "subject": null,
+    "email": "kusnadi.arie@gmail.com",
+    "name": "Arie Kusnadi",
+    "roles": null,
+    "member": true
+  },
+  {
+    "id": 4,
+    "createdAt": "2022-01-05T02:21:59.826Z",
+    "updatedAt": "2022-03-06T07:39:12.866Z",
+    "subject": null,
+    "email": "rstefanus@gmail.com",
+    "name": "Ron S.",
+    "roles": "admin",
+    "member": true
+  },
+  {
+    "id": 5,
+    "createdAt": "2022-01-05T02:21:59.826Z",
+    "updatedAt": "2022-03-06T07:39:23.089Z",
+    "subject": null,
+    "email": "rzp5177@gmail.com",
+    "name": "Rico Polim",
+    "roles": null,
+    "member": true
+  },
+  {
+    "id": 3,
+    "createdAt": "2022-01-05T02:21:59.826Z",
+    "updatedAt": "2022-03-07T07:56:29.529Z",
+    "subject": "",
+    "email": "ctirtoprodjo@gmail.com",
+    "name": "Chris",
+    "roles": "",
+    "member": false
+  },
+  {
+    "id": 1,
+    "createdAt": "2022-01-05T01:22:41.486Z",
+    "updatedAt": "2022-03-15T04:56:17.645Z",
+    "subject": "google-oauth2|109083120398932305717",
+    "email": "kevinkaryadi@gmail.com",
+    "name": "Kevin Karyadi",
+    "roles": "admin",
+    "member": false
+  }
+]

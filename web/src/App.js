@@ -1,4 +1,3 @@
-import { AuthProvider } from '@redwoodjs/auth'
 import { Auth0Client } from '@auth0/auth0-spa-js'
 
 import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
@@ -6,6 +5,8 @@ import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 
 import FatalErrorPage from 'src/pages/FatalErrorPage'
 import Routes from 'src/Routes'
+
+import { AuthProvider, useAuth } from './auth'
 
 import './scaffold.css'
 // import './index.css'
@@ -36,8 +37,8 @@ const auth0 = new Auth0Client({
 const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
     <RedwoodProvider titleTemplate="%AppTitle">
-      <AuthProvider client={auth0} type="auth0">
-        <RedwoodApolloProvider>
+      <AuthProvider>
+        <RedwoodApolloProvider useAuth={useAuth}>
           <Routes />
         </RedwoodApolloProvider>
       </AuthProvider>
