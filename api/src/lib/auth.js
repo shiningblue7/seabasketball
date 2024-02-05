@@ -1,5 +1,13 @@
+import { AuthenticationClient } from 'auth0'
+
 import { AuthenticationError, ForbiddenError } from '@redwoodjs/graphql-server'
+
 import { db } from 'src/lib/db'
+
+const auth0 = new AuthenticationClient({
+  domain: process.env.AUTH0_DOMAIN,
+  clientId: process.env.AUTH0_CLIENT_ID,
+})
 
 /**
  * Represents the user attributes returned by the decoding the
@@ -28,24 +36,23 @@ import { db } from 'src/lib/db'
  *   context information about the invocation such as IP Address
  * @returns RedwoodUser
  */
-export const getCurrentUser = async (decoded,
+export const getCurrentUser = async (
+  decoded,
   { token, type },
-  { event, context }) => {
-
-  if (!decoded.sub || !decoded ) {
+  { event, context }
+) => {
+  if (!decoded.sub || !decoded) {
     return null
   }
 
   let user = await db.user.findFirst({
-    where: { subject: decoded.sub
-    }
+    where: { subject: decoded.sub },
   })
 
   //find user by email
   if (!user && decoded.email) {
     user = await db.user.findFirst({
-      where: { email: decoded.email
-      }
+      where: { email: decoded.email },
     })
   }
 
@@ -53,32 +60,33 @@ export const getCurrentUser = async (decoded,
   if (user && !user.subject) {
     await db.user.update({
       where: {
-        id : user.id
+        id: user.id,
       },
       data: {
-        subject: decoded.sub
-      }
+        subject: decoded.sub,
+      },
     })
   }
 
   if (!user && token) {
     const auth0User = await auth0.getProfile(token)
-    console.log('auth0User.email' , auth0User.email)
+    console.log('auth0User.email', auth0User.email)
+
     // otherwise create a new user
     user = await db.user.upsert({
-      where:{
+      where: {
         email: auth0User.email,
       },
       update: {
         subject: auth0User.sub,
         email: auth0User.email,
-        name: auth0User.name
+        name: auth0User.name,
       },
       create: {
         subject: auth0User.sub,
         email: auth0User.email,
-        name: auth0User.name
-      }
+        name: auth0User.name,
+      },
     })
   }
   const roles = user?.roles?.split(',')
@@ -92,7 +100,7 @@ export const getCurrentUser = async (decoded,
   // if (roles) {
   //   return { ...decoded, roles, type, token }
   // }
-  let retUser = { ...decoded, roles, type, token, id:user.id }
+  let retUser = { ...decoded, roles, type, token, id: user.id }
   // console.log('retUser', retUser)
   return retUser
 
