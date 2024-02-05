@@ -6,6 +6,8 @@
 # https://redwoodjs.com/docs/app-configuration-redwood-toml
 
 [web]
+  bundler = "webpack"
+
   title = "Seattle Basketball"
   port = 8910
   apiUrl = "/.netlify/functions"

@@ -8,8 +8,8 @@
     ]
   },
   "devDependencies": {
-    "@redwoodjs/auth-auth0-setup": "4.5.0",
-    "@redwoodjs/core": "4.5.0",
+    "@redwoodjs/auth-auth0-setup": "6.6.4",
+    "@redwoodjs/core": "6.6.4",
     "auth0": "^2.37.0"
   },
   "eslintConfig": {
@@ -17,7 +17,7 @@
     "root": true
   },
   "engines": {
-    "node": ">=16.x <=18.x",
+    "node": "=18.x",
     "yarn": ">=1.15"
   },
   "prisma": {
